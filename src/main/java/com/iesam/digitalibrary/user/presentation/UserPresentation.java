@@ -1,17 +1,18 @@
 package com.iesam.digitalibrary.user.presentation;
 
 
-
-
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 
-import java.util.List;
+
+import java.util.Random;
 import java.util.Scanner;
 
 public class UserPresentation {
     private static Scanner scanner = new Scanner(System.in);
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789";
+    private static final Random random = new Random();
 
     public static void main(String[] args) {
         showMenu();
@@ -60,8 +61,9 @@ public class UserPresentation {
 
     public static User readUserDetails() {
         System.out.println("Enter User Information:");
-        System.out.print("ID: ");
-        String id = scanner.nextLine();
+        String id = generateUniqueID(8);
+        System.out.println("ID: " + id);
+        // Logica que comprueba un id si esta pero necesitamos el caso de uso get User
 
         System.out.print("Name: ");
         String name = scanner.nextLine();
@@ -69,8 +71,8 @@ public class UserPresentation {
         System.out.print("Role ID: ");
         String roleId = scanner.nextLine();
 
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+        String email = generarCorreoElectronico(name, id);
+        System.out.println("Email: "+email);
 
         System.out.print("Phone Number: ");
         String phoneNumber = scanner.nextLine();
@@ -107,7 +109,6 @@ public class UserPresentation {
     }
 
 
-
     public static void saveUser(User user) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         userRepository.save(user);
@@ -115,7 +116,7 @@ public class UserPresentation {
     }
 
 
-    public  static  void menuConsola(){
+    public static void menuConsola() {
         System.out.println("\nBienvenido al sistema de la biblioteca");
         System.out.println("----------------------------------");
         System.out.println("|     User Management System     |");
@@ -131,6 +132,24 @@ public class UserPresentation {
         System.out.print("Select an option: ");
     }
 
+    public static String generateUniqueID(int length) {
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(randomIndex);
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
+
+    public static String generarCorreoElectronico(String nombre, String id) {
+        // Format the email address: nombre + id + "@biblio.com"
+        String correo = nombre + id + "@biblio.com";
+        return correo;
+    }
 
 
 }
+
