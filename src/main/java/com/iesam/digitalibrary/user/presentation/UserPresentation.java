@@ -61,9 +61,12 @@ public class UserPresentation {
 
     public static User readUserDetails() {
         System.out.println("Enter User Information:");
-        String id = generateUniqueID(8);
-        System.out.println("ID: " + id);
-        // Logica que comprueba un id si esta pero necesitamos el caso de uso get User
+        //String userId = generateUniqueID(8);
+        String userId;
+        do {
+            userId = generateUniqueID(8);
+        } while (isUserIdTaken(userId));
+        System.out.println("Generated User ID: " + userId);
 
         System.out.print("Name: ");
         String name = scanner.nextLine();
@@ -71,8 +74,8 @@ public class UserPresentation {
         System.out.print("Role ID: ");
         String roleId = scanner.nextLine();
 
-        String email = generarCorreoElectronico(name, id);
-        System.out.println("Email: "+email);
+        String email = generarCorreoElectronico(name, userId);
+        System.out.println("Email: " + email);
 
         System.out.print("Phone Number: ");
         String phoneNumber = scanner.nextLine();
@@ -104,7 +107,7 @@ public class UserPresentation {
         System.out.print("Additional Data: ");
         String additionalData = scanner.nextLine();
 
-        return new User(id, name, email, phoneNumber, address, registrationDate, userType, status,
+        return new User(userId, name, email, phoneNumber, address, registrationDate, userType, status,
                 history, fines, transactions, notificationPreference, roleId, additionalData);
     }
 
@@ -135,8 +138,11 @@ public class UserPresentation {
     }
 
 
-
-
+    public static boolean isUserIdTaken(String userId) {
+        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        User existingUser = userRepository.obtain(userId);
+        return existingUser != null;
+    }
 
 
     public static void menuConsola() {
