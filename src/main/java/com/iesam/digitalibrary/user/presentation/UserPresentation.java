@@ -38,7 +38,7 @@ public class UserPresentation {
                     //deleteUser();
                     break;
                 case 4:
-                    //searchUser();
+                    searchUser();
                     break;
                 case 5:
                     //listAllUsers();
@@ -116,6 +116,29 @@ public class UserPresentation {
     }
 
 
+    public static User searchUser() {
+        System.out.print("Enter User ID to search: ");
+        String userId = scanner.nextLine();
+        User user = getUserById(userId);
+        if (user != null) {
+            System.out.println("User found:");
+            System.out.println(user.toStringCarnet());
+        } else {
+            System.out.println("User not found with ID: " + userId);
+        }
+        return user;
+    }
+
+    public static User getUserById(String userId) {
+        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        return userRepository.obtain(userId);
+    }
+
+
+
+
+
+
     public static void menuConsola() {
         System.out.println("\nBienvenido al sistema de la biblioteca");
         System.out.println("----------------------------------");
@@ -131,6 +154,7 @@ public class UserPresentation {
         System.out.println("----------------------------------");
         System.out.print("Select an option: ");
     }
+
 
     public static String generateUniqueID(int length) {
         StringBuilder sb = new StringBuilder(length);

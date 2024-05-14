@@ -18,6 +18,11 @@ public class UserDataRepository implements UserRepository {
         userLocalDataSource.save(user);
     }
 
+    @Override
+    public User obtain(String userID) {
+        return userLocalDataSource.findById(userID);
+    }
+
 
 }
 
