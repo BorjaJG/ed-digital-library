@@ -35,7 +35,7 @@ public class UserPresentation {
                     //modifyUser();
                     break;
                 case 3:
-                    //deleteUser();
+                    deleteUser();
                     break;
                 case 4:
                     searchUser();
@@ -178,6 +178,20 @@ public class UserPresentation {
         // Format the email address: nombre + id + "@biblio.com"
         String correo = nombre + id + "@biblio.com";
         return correo;
+    }
+    public static void deleteUser() {
+        System.out.print("Enter User ID to delete: ");
+        String userId = scanner.nextLine();
+        if (!userId.isEmpty()) {
+            deleteUserById(userId);
+        } else {
+            System.out.println("Invalid user ID.");
+        }
+    }
+    public static void deleteUserById(String userId) {
+        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        userRepository.delete(userId);
+        System.out.println("User deleted successfully.");
     }
 
 
