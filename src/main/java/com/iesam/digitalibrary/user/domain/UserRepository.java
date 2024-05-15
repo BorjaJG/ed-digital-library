@@ -1,7 +1,5 @@
 package com.iesam.digitalibrary.user.domain;
 
-import java.util.ArrayList;
-
 public interface UserRepository {
 
 
@@ -9,4 +7,7 @@ public interface UserRepository {
 
 
     User obtain(String userID);
+
+
+    void delete(String userID);
 }

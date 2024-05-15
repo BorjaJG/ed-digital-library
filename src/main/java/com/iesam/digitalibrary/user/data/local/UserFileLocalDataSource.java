@@ -84,7 +84,7 @@ public class UserFileLocalDataSource  implements UserLocalDataSource {
         List<User> newList = new ArrayList<>();
         List<User> models = findAll();
         for (User model : models) {
-            if (model.userID!= userId) {
+            if (!model.userID.equals(userId)){
                 newList.add(model);
             }
         }

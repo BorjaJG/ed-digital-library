@@ -23,6 +23,11 @@ public class UserDataRepository implements UserRepository {
         return userLocalDataSource.findById(userID);
     }
 
+    @Override
+    public void delete(String userID) {
+        userLocalDataSource.delete(userID);
+    }
+
 
 }
 
