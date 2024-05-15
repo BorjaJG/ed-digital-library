@@ -2,7 +2,6 @@ package com.iesam.digitalibrary.digitalresources.ebook.data;
 
 import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesLocalDataSource;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
-import com.iesam.digitalibrary.user.data.local.UserLocalDataSource;
 
 public class EbookDataRepository implements EbookResourcesLocalDataSource {
 
@@ -16,4 +15,12 @@ public class EbookDataRepository implements EbookResourcesLocalDataSource {
     public void save(Ebook ebook) {
         ebookResourcesLocalDataSource.save(ebook);
     }
+
+    @Override
+    public Ebook findById(String idDigitalResource) {
+        return  ebookResourcesLocalDataSource.findById(idDigitalResource);
+    }
+
+
+
 }
