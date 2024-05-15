@@ -1,17 +1,19 @@
 package com.iesam.digitalibrary.digitalresources.ebook.domain;
 
-public class Ebook {
+import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
+
+public class Ebook extends DigitalResource {
     public final String title;
     public final String author;
     public final String publicationDate;
     public final String isbn;
 
-
-    public Ebook(String title, String author, String publicationDate, String isbn) {
+    public Ebook(String idDigitalResource, String title, String author, String publicationDate, String isbn) {
+        super(idDigitalResource);
         this.title = title;
         this.author = author;
         this.publicationDate = publicationDate;
-        this.isbn = isbn;
+        this.isbn = idDigitalResource;
     }
 
     @Override
@@ -21,6 +23,7 @@ public class Ebook {
                 ", author='" + author + '\'' +
                 ", publicationDate='" + publicationDate + '\'' +
                 ", isbn='" + isbn + '\'' +
-                '}';
+                ", idDigitalResource='" + idDigitalResource + '\'' +
+                "} " + super.toString();
     }
 }

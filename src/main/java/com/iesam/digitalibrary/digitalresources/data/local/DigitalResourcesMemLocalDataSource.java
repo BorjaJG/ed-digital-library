@@ -2,7 +2,7 @@ package com.iesam.digitalibrary.digitalresources.data.local;
 
 
 
-import com.iesam.digitalibrary.user.domain.User;
+import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,8 @@ import java.util.TreeMap;
 
 public class DigitalResourcesMemLocalDataSource {
 
-    private Map<String, User> dataStore = new TreeMap<>();
+
+    private Map<String, DigitalResource> dataStore = new TreeMap<>();
     private static DigitalResourcesMemLocalDataSource instance=null;
     public DigitalResourcesMemLocalDataSource newInstance(){
         if(instance== null){
@@ -19,21 +20,21 @@ public class DigitalResourcesMemLocalDataSource {
         return instance;
     }
 
-    public void save(User user) {
-        dataStore.put(user.userID, user);
+    public void save(DigitalResource DigitalResource) {
+        dataStore.put(DigitalResource.idDigitalResource, DigitalResource);
     }
 
-    public void saveList(List<User> users) {
-        for (User user : users) {
-            save(user);
+    public void saveList(List<DigitalResource> digitalResources) {
+        for (DigitalResource digitalResource : digitalResources) {
+            save(digitalResource);
         }
     }
 
-    public User findById(String userId) {
-        return dataStore.get(userId);
+    public DigitalResource findById(String idDigitalResource ) {
+        return dataStore.get(idDigitalResource);
     }
 
-    public List<User> findAll() {
+    public List<DigitalResource> findAll() {
         return dataStore.values().stream().toList();
     }
 
