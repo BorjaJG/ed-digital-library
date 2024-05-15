@@ -12,6 +12,5 @@ public interface UserLocalDataSource {
     void delete(String userID);
 
 
-
-
+    void modify(User user);
 }

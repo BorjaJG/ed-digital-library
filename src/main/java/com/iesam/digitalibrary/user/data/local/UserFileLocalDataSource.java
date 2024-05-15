@@ -91,7 +91,12 @@ public class UserFileLocalDataSource  implements UserLocalDataSource {
         saveList(newList);
     }
 
+    @Override
+    public void modify(User user) {
+        delete(user.userID);
+        save(user);
 
+    }
 
 
 }

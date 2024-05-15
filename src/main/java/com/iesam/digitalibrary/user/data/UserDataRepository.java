@@ -28,6 +28,11 @@ public class UserDataRepository implements UserRepository {
         userLocalDataSource.delete(userID);
     }
 
+    @Override
+    public void modify(User user) {
+        userLocalDataSource.modify(user);
+    }
+
 
 }
 
