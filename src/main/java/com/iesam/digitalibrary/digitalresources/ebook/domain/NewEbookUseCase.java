@@ -1,9 +1,9 @@
 package com.iesam.digitalibrary.digitalresources.ebook.domain;
 
-public class NewEbook {
+public class NewEbookUseCase {
    private EbookRepository ebookRepository;
 
-    public NewEbook(EbookRepository ebookRepository) {
+    public NewEbookUseCase(EbookRepository ebookRepository) {
         this.ebookRepository = ebookRepository;
     }
 
