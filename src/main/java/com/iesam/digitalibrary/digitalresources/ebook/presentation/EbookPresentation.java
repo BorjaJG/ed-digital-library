@@ -78,11 +78,11 @@ public class EbookPresentation {
     public static Ebook readUserDetails() {
         System.out.println("Enter Ebook Information:");
         //String userId = generateUniqueID(8);
-        String isbn;
+        String idDigitalResource;
+        String isbn = null;
+        idDigitalResource = generateUniqueID(8);
 
-        isbn = generateUniqueID(8);
-
-        System.out.println("Generated ISBN: " + isbn);
+        System.out.println("Generated ISBN: " + idDigitalResource);
 
         System.out.print("Title: ");
         String title = scanner.nextLine();
@@ -94,7 +94,7 @@ public class EbookPresentation {
         String publicationDate = scanner.nextLine();
 
 
-        return new Ebook(title, author, publicationDate, isbn);
+        return new Ebook(idDigitalResource , isbn , title ,author, publicationDate);
 
     }
 

@@ -2,6 +2,7 @@ package com.iesam;
 
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
 import com.iesam.digitalibrary.digitalresources.ebook.presentation.EbookPresentation;
+import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
 import com.iesam.digitalibrary.user.presentation.UserPresentation;
 
 import java.util.Scanner;
@@ -29,7 +30,7 @@ public class Main {
 
             switch (option) {
                 case 1:
-                    EbookPresentation.showMenu();
+                    DigitalresourcePresentation.showMenu();
                     break;
                 case 2:
 

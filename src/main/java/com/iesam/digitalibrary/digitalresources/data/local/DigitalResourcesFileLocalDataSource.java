@@ -4,7 +4,7 @@ package com.iesam.digitalibrary.digitalresources.data.local;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.iesam.digitalibrary.user.domain.User;
+import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,28 +17,28 @@ import java.util.Objects;
 import java.util.Scanner;
 public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLocalDataSource {
 
-    private String nameFile = "Biblioteca.txt";
+    private String nameFile = "Ebook.txt";
 
     private Gson gson = new Gson();
 
-    private final Type typeList = new TypeToken<ArrayList<User>>() {
+    private final Type typeList = new TypeToken<ArrayList<DigitalResource>>() {
     }.getType();
 
-    public void save(User user) {
-        List<User> users = findAll();
-        users.add(user);
-        saveToFile(users);
-
+    public boolean save(DigitalResource digitalResource) {
+        List<DigitalResource> digitalResources = findAll();
+        digitalResources.add(digitalResource);
+        saveToFile(digitalResources);
+        return false;
     }
 
-    public void saveList(List<User> users) {
-        saveToFile(users);
+    public void saveList(List<DigitalResource> digitalResources) {
+        saveToFile(digitalResources);
     }
 
-    private void saveToFile(List<User> users) {
+    private void saveToFile(List<DigitalResource> digitalResources) {
         try {
             FileWriter myWriter = new FileWriter(nameFile);
-            myWriter.write(gson.toJson(users));
+            myWriter.write(gson.toJson(digitalResources));
             myWriter.close();
             System.out.println("Datos guardados correctamente");
         } catch (IOException e) {
@@ -47,17 +47,17 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
         }
     }
 
-    public User findById(String id) {
-        List<User> user = findAll();
-        for (User model : user) {
-            if (Objects.equals(model.userID, id)) {
+    public DigitalResource findById(String id) {
+        List<DigitalResource> digitalResources = findAll();
+        for (DigitalResource model : digitalResources) {
+            if (Objects.equals(model.idDigitalResource, id)) {
                 return model;
             }
         }
         return null;
     }
 
-    public ArrayList<User> findAll() {
+    public ArrayList<DigitalResource> findAll() {
         try {
             File myObj = new File(nameFile);
             if (!myObj.exists()) {
@@ -78,17 +78,6 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
             throw new RuntimeException(e);
         }
         return new ArrayList<>();
-    }
-
-    public void delete(String userId) {
-        List<User> newList = new ArrayList<>();
-        List<User> models = findAll();
-        for (User model : models) {
-            if (!model.userID.equals(userId)){
-                newList.add(model);
-            }
-        }
-        saveList(newList);
     }
 
 
