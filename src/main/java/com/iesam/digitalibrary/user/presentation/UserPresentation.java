@@ -3,6 +3,7 @@ package com.iesam.digitalibrary.user.presentation;
 
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
+import com.iesam.digitalibrary.user.data.local.UserLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 
 
@@ -32,7 +33,7 @@ public class UserPresentation {
                     addUser();
                     break;
                 case 2:
-                    //modifyUser();
+                    modifyUser();
                     break;
                 case 3:
                     deleteUser();
@@ -179,6 +180,7 @@ public class UserPresentation {
         String correo = nombre + id + "@biblio.com";
         return correo;
     }
+
     public static void deleteUser() {
         System.out.print("Enter User ID to delete: ");
         String userId = scanner.nextLine();
@@ -188,10 +190,86 @@ public class UserPresentation {
             System.out.println("Invalid user ID.");
         }
     }
+
     public static void deleteUserById(String userId) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         userRepository.delete(userId);
         System.out.println("User deleted successfully.");
+    }
+
+    public static void modifyUser() {
+        User user = readModyUserDetails();
+        if (user != null) {
+            modifyUser(user);
+        }
+    }
+
+    private static User readModyUserDetails() {
+
+            System.out.println("Enter User Information:");
+            //String userId = generateUniqueID(8);
+            String userId;
+            do {
+                System.out.println("Enter ID:");
+                userId = scanner.nextLine();
+                if (doesUserIdTaken(userId)) {
+                    System.out.println("Identification does not exist. Please enter a different ID.");
+                }
+            } while (doesUserIdTaken(userId));
+            System.out.println("Generated User ID: " + userId);
+
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+
+            System.out.print("Role ID: ");
+            String roleId = scanner.nextLine();
+
+            String email = generarCorreoElectronico(name, userId);
+            System.out.println("Email: " + email);
+
+            System.out.print("Phone Number: ");
+            String phoneNumber = scanner.nextLine();
+
+            System.out.print("Address: ");
+            String address = scanner.nextLine();
+
+            System.out.print("Registration Date: ");
+            String registrationDate = scanner.nextLine();
+
+            System.out.print("Status: ");
+            String status = scanner.nextLine();
+
+            System.out.print("History: ");
+            String history = scanner.nextLine();
+
+            System.out.print("Fines: ");
+            String fines = scanner.nextLine();
+
+            System.out.print("Transactions: ");
+            String transactions = scanner.nextLine();
+
+            System.out.print("Notification Preference: ");
+            String notificationPreference = scanner.nextLine();
+
+            System.out.print("User Type: ");
+            String userType = scanner.nextLine();
+
+            System.out.print("Additional Data: ");
+            String additionalData = scanner.nextLine();
+
+            return new User(userId, name, email, phoneNumber, address, registrationDate, userType, status,
+                    history, fines, transactions, notificationPreference, roleId, additionalData);
+
+    }
+    public static boolean doesUserIdTaken(String userId) {
+        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        User existingUser = userRepository.obtain(userId);
+        return existingUser == null;
+    }
+
+    private static void modifyUser(User user) {
+        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        userRepository.modify(user);
     }
 
 

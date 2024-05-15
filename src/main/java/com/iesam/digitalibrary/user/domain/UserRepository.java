@@ -10,4 +10,6 @@ public interface UserRepository {
 
 
     void delete(String userID);
+
+    void modify(User user);
 }
