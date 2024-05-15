@@ -3,10 +3,11 @@ package com.iesam.digitalibrary.user.presentation;
 
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
-import com.iesam.digitalibrary.user.data.local.UserLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -42,7 +43,7 @@ public class UserPresentation {
                     searchUser();
                     break;
                 case 5:
-                    //listAllUsers();
+                     listUser();
                     break;
                 case 6:
                     System.out.println("Exiting...");
@@ -272,6 +273,16 @@ public class UserPresentation {
         userRepository.modify(user);
     }
 
+
+
+    private static void listUser() {
+        System.out.println("List of Users:");
+        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        ArrayList<User> users = userRepository.lits();
+        for (User user : users) {
+            System.out.println(user.toStringCarnet());
+        }
+    }
 
 }
 
