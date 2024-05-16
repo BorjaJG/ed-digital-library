@@ -40,7 +40,7 @@ public class EbookPresentation {
                     //modifyEbook();
                     break;
                 case 3:
-                    //deleteEbook();
+                    deleteEbook();
                     break;
                 case 4:
                     //searchEbook();
@@ -126,6 +126,23 @@ public class EbookPresentation {
         EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
         Ebook existingebook = ebookRepository.findById(idDigitalResource);
         return existingebook != null;
+    }
+
+
+    public static void deleteEbook() {
+        System.out.print("Enter Ebook ID to delete: ");
+        String idEbook = scanner.nextLine();
+        if (!idEbook.isEmpty()) {
+            deleteEbookById(idEbook);
+        } else {
+            System.out.println("Invalid Ebook ID.");
+        }
+    }
+
+    public static void deleteEbookById(String idEbook) {
+        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        ebookRepository.delete(idEbook);
+        System.out.println("Ebook deleted successfully.");
     }
 
 

@@ -1,1 +1,1 @@
-[{"author":"1","publicationDate":"1","isbn":"1","idDigitalResource":"1"}]
+[]
