@@ -92,7 +92,11 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
         saveList(newList);
     }
 
-
+    @Override
+    public void modify(Ebook ebook) {
+        delete(ebook.isbn);
+        save(ebook);
+    }
 
 
 }

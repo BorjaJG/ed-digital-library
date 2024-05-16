@@ -3,10 +3,7 @@ package com.iesam.digitalibrary.digitalresources.ebook.presentation;
 import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
 import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
-import com.iesam.digitalibrary.digitalresources.ebook.domain.EbookRepository;
-import com.iesam.digitalibrary.user.data.UserDataRepository;
-import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
-import com.iesam.digitalibrary.user.domain.User;
+
 
 import java.util.Random;
 import java.util.Scanner;
@@ -37,7 +34,7 @@ public class EbookPresentation {
                     addEbook();
                     break;
                 case 2:
-                    //modifyEbook();
+                    modifyEbook();
                     break;
                 case 3:
                     deleteEbook();
@@ -144,6 +141,53 @@ public class EbookPresentation {
         ebookRepository.delete(idEbook);
         System.out.println("Ebook deleted successfully.");
     }
+    public static void modifyEbook() {
+        Ebook ebook = readModyEbookDetails();
+        if (ebook != null) {
+            modifyEbook(ebook);
+        }
+    }
+
+    private static Ebook readModyEbookDetails() {
+        System.out.println("Enter Ebook Information:");
+        //String userId = generateUniqueID(8);
+        String isbn = null;
+        String idDigitalResource;
+        do {
+            System.out.println("Enter ID:");
+            idDigitalResource = scanner.nextLine();
+            if (doesEbookIdTaken(idDigitalResource)) {
+                System.out.println("Identification does not exist. Please enter a different ID.");
+            }
+        } while (doesEbookIdTaken(idDigitalResource));
+
+        System.out.println("Generated ISBN: " + idDigitalResource);
+
+        System.out.print("Title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Author: ");
+        String author = scanner.nextLine();
+
+        System.out.print("Publication Date: ");
+        String publicationDate = scanner.nextLine();
+
+
+        return new Ebook(idDigitalResource, isbn, title, author, publicationDate);
+
+
+    }
+    public static boolean doesEbookIdTaken(String isbn) {
+        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        Ebook existingUser = ebookRepository.findById(isbn);
+        return existingUser == null;
+    }
+
+    private static void modifyEbook(Ebook ebook) {
+        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        ebookRepository.modify(ebook);
+    }
+
 
 
 }
