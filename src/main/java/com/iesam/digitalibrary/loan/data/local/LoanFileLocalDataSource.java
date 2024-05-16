@@ -1,10 +1,9 @@
-package com.iesam.digitalibrary.digitalresources.data.local;
-
-
+package com.iesam.digitalibrary.loan.data.local;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
+import com.iesam.digitalibrary.loan.domain.Loan;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,30 +14,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLocalDataSource {
+public class LoanFileLocalDataSource implements LoanLocalDataSource {
 
-    private String nameFile = "Ebook.txt";
+    private String nameFile = "Loan.txt";
 
     private Gson gson = new Gson();
 
-    private final Type typeList = new TypeToken<ArrayList<DigitalResource>>() {
+    private final Type typeList = new TypeToken<ArrayList<Loan>>() {
     }.getType();
 
-    public boolean save(DigitalResource digitalResource) {
-        List<DigitalResource> digitalResources = findAll();
-        digitalResources.add(digitalResource);
-        saveToFile(digitalResources);
-        return false;
+    public void save(Loan loan) {
+        List<Loan> loans = findAll();
+        loans.add(loan);
+        saveToFile(loans);
+
     }
 
-    public void saveList(List<DigitalResource> digitalResources) {
-        saveToFile(digitalResources);
+    @Override
+    public void delete(String idLoan) {
+            List<Loan> newList = new ArrayList<>();
+        List<Loan> models = findAll();
+        for (Loan model : models) {
+            if (model.idLoan!= idLoan) {
+                newList.add(model);
+            }
+        }
+        saveList(newList);
     }
 
-    private void saveToFile(List<DigitalResource> digitalResources) {
+    public void saveList(List<Loan> loans) {
+        saveToFile(loans);
+    }
+
+    private void saveToFile(List<Loan> loans) {
         try {
             FileWriter myWriter = new FileWriter(nameFile);
-            myWriter.write(gson.toJson(digitalResources));
+            myWriter.write(gson.toJson(loans));
             myWriter.close();
             System.out.println("Datos guardados correctamente");
         } catch (IOException e) {
@@ -47,9 +58,17 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
         }
     }
 
+    public Loan findById(String id) {
+        List<Loan> loans = findAll();
+        for (Loan loan : loans) {
+            if (Objects.equals(loan.idLoan, id)) {
+                return loan;
+            }
+        }
+        return null;
+    }
 
-
-    public ArrayList<DigitalResource> findAll() {
+    public ArrayList<Loan> findAll() {
         try {
             File myObj = new File(nameFile);
             if (!myObj.exists()) {
@@ -72,16 +91,9 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
         return new ArrayList<>();
     }
 
-    @Override
-    public DigitalResource findById(String id) {
-        List<DigitalResource> digitalResources = findAll();
-        for (DigitalResource model : digitalResources) {
-            if (Objects.equals(model.idDigitalResource, id)) {
-                return model;
-            }
-        }
-        return null;
-    }
+
+
+
 
 
 }

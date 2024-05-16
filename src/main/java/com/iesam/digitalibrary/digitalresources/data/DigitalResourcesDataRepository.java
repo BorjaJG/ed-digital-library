@@ -21,4 +21,9 @@ public class DigitalResourcesDataRepository implements DigitalResourcesLocalData
     public ArrayList<DigitalResource> findAll() {
         return digitalResourcesLocalDataSource.findAll();
     }
+
+    @Override
+    public DigitalResource findById(String id) {
+        return digitalResourcesLocalDataSource.findById(id);
+    }
 }
