@@ -11,6 +11,6 @@ public interface EbookResourcesLocalDataSource {
     Ebook findById(String idDigitalResource);
    void delete(String isbn);
 
-
+    void modify(Ebook ebook);
 
 }

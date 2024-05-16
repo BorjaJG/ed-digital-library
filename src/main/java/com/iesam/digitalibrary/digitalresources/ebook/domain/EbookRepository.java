@@ -7,4 +7,6 @@ public interface EbookRepository {
     Ebook obtain(String isbn);
 
     void delete(String isbn);
+
+    void modify(Ebook ebook);
 }
