@@ -35,6 +35,8 @@ public class DigitalresourcePresentation {
                     listUser();
                     break;
                 case 3:
+                    searchDG();
+                    break;
                 case 4:
                     System.out.println("Exiting...");
                     return;
@@ -55,7 +57,7 @@ public class DigitalresourcePresentation {
         System.out.print("Select an option: ");
     }
 
-    private static void listUser() {
+    public static void listUser() {
         System.out.println("List of Users:");
         DigitalResourcesDataRepository digitalResourcesRepository = new DigitalResourcesDataRepository(new DigitalResourcesFileLocalDataSource());
         ArrayList<DigitalResource> digitalResources = digitalResourcesRepository.findAll();
@@ -64,8 +66,22 @@ public class DigitalresourcePresentation {
         }
     }
 
-
-
+    public static DigitalResource searchDG() {
+        System.out.print("Enter User ID to search: ");
+        String id = scanner.nextLine();
+        DigitalResource digitalResource = getDGById(id);
+        if (digitalResource != null) {
+            System.out.println("User found:");
+            System.out.println(digitalResource.toString());
+        } else {
+            System.out.println("User not found with ID: " + id);
+        }
+        return digitalResource;
+    }
+    public static DigitalResource getDGById(String id) {
+        DigitalResourcesDataRepository digitalResourcesRepository = new DigitalResourcesDataRepository(new DigitalResourcesFileLocalDataSource());
+        return digitalResourcesRepository.findById(id);
+    }
 
 
 }
