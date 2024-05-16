@@ -3,12 +3,15 @@ package com.iesam.digitalibrary.digitalresources.ebook.presentation;
 import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
 import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
+import com.iesam.digitalibrary.digitalresources.ebook.domain.EbookRepository;
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 
 import java.util.Random;
 import java.util.Scanner;
+
+import static com.iesam.digitalibrary.user.presentation.UserPresentation.isUserIdTaken;
 
 public class EbookPresentation {
 
@@ -78,9 +81,11 @@ public class EbookPresentation {
     public static Ebook readUserDetails() {
         System.out.println("Enter Ebook Information:");
         //String userId = generateUniqueID(8);
-        String idDigitalResource;
         String isbn = null;
-        idDigitalResource = generateUniqueID(8);
+        String idDigitalResource;
+        do {
+            idDigitalResource = generateUniqueID(8);
+        } while (isEbookIdTaken(idDigitalResource));
 
         System.out.println("Generated ISBN: " + idDigitalResource);
 
@@ -94,7 +99,7 @@ public class EbookPresentation {
         String publicationDate = scanner.nextLine();
 
 
-        return new Ebook(idDigitalResource , isbn , title ,author, publicationDate);
+        return new Ebook(idDigitalResource, isbn, title, author, publicationDate);
 
     }
 
@@ -115,6 +120,12 @@ public class EbookPresentation {
         }
 
         return sb.toString();
+    }
+
+    public static boolean isEbookIdTaken(String idDigitalResource) {
+        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        Ebook existingebook = ebookRepository.findById(idDigitalResource);
+        return existingebook != null;
     }
 
 

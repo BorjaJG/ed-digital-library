@@ -51,7 +51,7 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
     public Ebook findById(String id) {
         List<Ebook> ebooks = findAll();
         for (Ebook model : ebooks) {
-            if (Objects.equals(model.isbn, id)) {
+            if (Objects.equals(model.idDigitalResource, id)) {
                 return model;
             }
         }
