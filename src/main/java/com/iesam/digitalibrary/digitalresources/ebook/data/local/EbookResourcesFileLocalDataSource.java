@@ -81,11 +81,11 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
         return new ArrayList<>();
     }
 
-    public void delete(String idEbook) {
+    public void delete(String isbn) {
         List<Ebook> newList = new ArrayList<>();
         List<Ebook> models = findAll();
         for (Ebook model : models) {
-            if (!model.isbn.equals(idEbook)){
+            if (!model.isbn.equals(isbn)){
                 newList.add(model);
             }
         }

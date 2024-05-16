@@ -9,6 +9,7 @@ public interface EbookResourcesLocalDataSource {
 
     void save(Ebook ebook);
     Ebook findById(String idDigitalResource);
+   void delete(String isbn);
 
 
 

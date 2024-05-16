@@ -21,6 +21,10 @@ public class EbookDataRepository implements EbookResourcesLocalDataSource {
         return  ebookResourcesLocalDataSource.findById(idDigitalResource);
     }
 
+    @Override
+    public void delete(String isbn) {
+         ebookResourcesLocalDataSource.delete(isbn);
+    }
 
 
 }
