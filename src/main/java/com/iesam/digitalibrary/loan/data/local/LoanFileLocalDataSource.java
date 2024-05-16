@@ -32,10 +32,11 @@ public class LoanFileLocalDataSource implements LoanLocalDataSource {
 
     @Override
     public void delete(String idLoan) {
-            List<Loan> newList = new ArrayList<>();
+        List<Loan> newList = new ArrayList<>();
         List<Loan> models = findAll();
         for (Loan model : models) {
-            if (model.idLoan!= idLoan) {
+            if (!model.idLoan.equals(idLoan)) {
+
                 newList.add(model);
             }
         }

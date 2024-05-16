@@ -8,6 +8,8 @@ import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePrese
 import com.iesam.digitalibrary.loan.data.LoanDataRepository;
 import com.iesam.digitalibrary.loan.data.local.LoanFileLocalDataSource;
 import com.iesam.digitalibrary.loan.domain.Loan;
+import com.iesam.digitalibrary.user.data.UserDataRepository;
+import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 import com.iesam.digitalibrary.user.presentation.UserPresentation;
 
@@ -40,7 +42,7 @@ public class LoanPresentation {
                     //modifyUser();
                     break;
                 case 3:
-                    //deleteUser();
+                    deleteLoan();
                     break;
                 case 4:
                     //searchUser();
@@ -126,11 +128,23 @@ public class LoanPresentation {
         return sb.toString();
     }
 
-    public static String generarCorreoElectronico(String nombre, String id) {
-        // Format the email address: nombre + id + "@biblio.com"
-        String correo = nombre + id + "@biblio.com";
-        return correo;
+    public static void deleteLoan() {
+        System.out.print("Enter Loan ID to delete: ");
+        String idLoan = scanner.nextLine();
+        if (!idLoan.isEmpty()) {
+            deleteLoanById(idLoan);
+        } else {
+            System.out.println("Invalid Loan ID.");
+        }
     }
+
+    public static void deleteLoanById(String idLoan) {
+        LoanDataRepository LoanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        LoanRepository.delete(idLoan);
+        System.out.println("Loan deleted successfully.");
+    }
+
+    
 
 
 }
