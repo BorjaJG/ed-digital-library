@@ -2,17 +2,16 @@ package com.iesam.digitalibrary.loan.presentation;
 
 
 import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
-import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
-import com.iesam.digitalibrary.digitalresources.ebook.presentation.EbookPresentation;
 import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
 import com.iesam.digitalibrary.loan.data.LoanDataRepository;
 import com.iesam.digitalibrary.loan.data.local.LoanFileLocalDataSource;
 import com.iesam.digitalibrary.loan.domain.Loan;
-import com.iesam.digitalibrary.user.data.UserDataRepository;
-import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 import com.iesam.digitalibrary.user.presentation.UserPresentation;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -72,11 +71,11 @@ public class LoanPresentation {
         idLoan = generateUniqueID(8);
         System.out.println("Generated Loan ID: " + idLoan);
         System.out.print("fechaI: ");
-        String fechaI = scanner.nextLine();
+        Date fechaI = generateDate();
         System.out.print("fechaF: ");
-        String fechaF = scanner.nextLine();
-        System.out.print("fechaE: ");
-        String fechaE = scanner.nextLine();
+        Date fechaF = generateDateFiveDaysAhead();
+        System.out.println("fechaE: No se tine este dato aun ");
+        Date fechaE = null;
         System.out.print("User: ");
         User user = UserPresentation.searchUser();
         System.out.print("DigitalResource: ");
@@ -92,12 +91,6 @@ public class LoanPresentation {
         loanRepository.save(loan);
         System.out.println("Loan saved successfully.");
     }
-
-
-
-
-
-
 
     public static void menuConsola() {
         System.out.println("\nBienvenido al sistema de la biblioteca");
@@ -144,7 +137,25 @@ public class LoanPresentation {
         System.out.println("Loan deleted successfully.");
     }
 
-    
+
+    public static Date generateDate() {
+        LocalDate currentDate = LocalDate.now();
+        System.out.println("Current Date: " + currentDate);
+        return Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+
+    public static Date generateDateFiveDaysAhead() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate futureDate = currentDate.plusDays(5);
+        System.out.println("Date Five Days Ahead: " + futureDate);
+        return Date.from(futureDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+
+
+
+
 
 
 }

@@ -1,1 +1,1 @@
-[]
+[{"idLoan":"DQYOXAL5","fechaI":"May 19, 2024, 12:00:00 AM","fechaF":"May 24, 2024, 12:00:00 AM"}]
