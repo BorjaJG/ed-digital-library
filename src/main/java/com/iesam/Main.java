@@ -3,6 +3,7 @@ package com.iesam;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
 import com.iesam.digitalibrary.digitalresources.ebook.presentation.EbookPresentation;
 import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
+import com.iesam.digitalibrary.loan.presentation.LoanPresentation;
 import com.iesam.digitalibrary.user.presentation.UserPresentation;
 
 import java.util.Scanner;
@@ -33,9 +34,7 @@ public class Main {
                     DigitalresourcePresentation.showMenu();
                     break;
                 case 2:
-
-
-
+                    LoanPresentation.showMenu();
                     break;
                 case 3:
                     UserPresentation.showMenu();

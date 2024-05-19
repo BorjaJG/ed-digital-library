@@ -47,7 +47,7 @@ public class LoanPresentation {
                     //searchUser();
                     break;
                 case 5:
-                     //listUser();
+                    //listUser();
                     break;
                 case 6:
                     System.out.println("Exiting...");
@@ -76,11 +76,22 @@ public class LoanPresentation {
         Date fechaF = generateDateFiveDaysAhead();
         System.out.println("fechaE: No se tine este dato aun ");
         Date fechaE = null;
-        System.out.print("User: ");
-        User user = UserPresentation.searchUser();
-        System.out.print("DigitalResource: ");
-        DigitalResource digitalResource = DigitalresourcePresentation.searchDG();
-        return new Loan(idLoan, digitalResource ,user,fechaI, fechaF, fechaE);
+        User user = null;
+        DigitalResource digitalResource = null;
+        while (user == null || digitalResource == null) {
+            System.out.print("User: ");
+            user = UserPresentation.searchUser();
+            if (user == null) {
+                System.out.println("User not found. Please try again.");
+            }
+
+            System.out.print("DigitalResource: ");
+            digitalResource = DigitalresourcePresentation.searchDG();
+            if (digitalResource == null) {
+                System.out.println("Digital resource not found. Please try again.");
+            }
+        }
+        return new Loan(idLoan, digitalResource, user, fechaI, fechaF, fechaE);
 
 
     }
@@ -151,11 +162,6 @@ public class LoanPresentation {
         System.out.println("Date Five Days Ahead: " + futureDate);
         return Date.from(futureDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
-
-
-
-
-
 
 
 }
