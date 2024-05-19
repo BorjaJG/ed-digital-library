@@ -6,11 +6,14 @@ import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePrese
 import com.iesam.digitalibrary.loan.data.LoanDataRepository;
 import com.iesam.digitalibrary.loan.data.local.LoanFileLocalDataSource;
 import com.iesam.digitalibrary.loan.domain.Loan;
+import com.iesam.digitalibrary.user.data.UserDataRepository;
+import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 import com.iesam.digitalibrary.user.presentation.UserPresentation;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
@@ -38,16 +41,16 @@ public class LoanPresentation {
                     addLoan();
                     break;
                 case 2:
-                    //modifyUser();
-                    break;
-                case 3:
                     deleteLoan();
                     break;
+                case 3:
+                    //listLoanNotOutstanding();
+                    break;
                 case 4:
-                    //searchUser();
+                    listLoanOutstanding();
                     break;
                 case 5:
-                    //listUser();
+                    listLoan();
                     break;
                 case 6:
                     System.out.println("Exiting...");
@@ -110,9 +113,9 @@ public class LoanPresentation {
         System.out.println("----------------------------------");
         System.out.println("|  Options:                      |");
         System.out.println("|  1. Add Loan                   |");
-        System.out.println("|  2. Modify Loan                |");
-        System.out.println("|  3. Delete Loan                |");
-        System.out.println("|  4. Search Loan                |");
+        System.out.println("|  2. Delete Loan                |");
+        System.out.println("|  3. List Loan not Outstanding  |");
+        System.out.println("|  4. List  Outstanding         |");
         System.out.println("|  5. List All Loans             |");
         System.out.println("|  6. Exit                       |");
         System.out.println("----------------------------------");
@@ -162,6 +165,39 @@ public class LoanPresentation {
         System.out.println("Date Five Days Ahead: " + futureDate);
         return Date.from(futureDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
+
+
+    private static void listLoan() {
+        System.out.println("List of Loans:");
+        LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        ArrayList<Loan> loans = loanRepository.findAll();
+        for (Loan loan: loans) {
+            System.out.println(loan.toString());
+        }
+    }
+
+
+    private static void listLoanOutstanding() {
+        System.out.println("List of Loans Outstanding:");
+        LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        ArrayList<Loan> loans = loanRepository.findAll();
+        for (Loan loan: loans) {
+            if (loan.fechaE == null) {
+                System.out.println(loan.toString());
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
