@@ -9,25 +9,29 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
 class NewUserUseCaseTest {
 
     @Mock
     UserRepository userRepository;
     NewUserUseCase newUserUseCase;
+
     @BeforeEach
-    public void setUp(){
-        newUserUseCase= new NewUserUseCase(userRepository);
+    public void setUp() {
+        newUserUseCase = new NewUserUseCase(userRepository);
     }
-   @AfterEach
-    public void clear(){
+
+    @AfterEach
+    public void clear() {
         newUserUseCase = null;
     }
+
     @Test
-    public void GetUserAndSaveUser(){
+    public void GetUserAndSaveUser() {
         //Given
-        User user = new User("1","2","juan","amigo@amigo","617929803","1","1",
-                "1", "1","1","1","1","1","1");
+        User user = new User("1", "2", "juan", "amigo@amigo", "617929803", "1", "1",
+                "1", "1", "1", "1", "1", "1", "1");
         //When
         newUserUseCase.execute(user);
         //Then
