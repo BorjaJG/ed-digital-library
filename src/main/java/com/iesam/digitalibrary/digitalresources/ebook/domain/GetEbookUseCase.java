@@ -9,7 +9,7 @@ public class GetEbookUseCase {
     public GetEbookUseCase(EbookRepository ebookRepository) {
         this.ebookRepository = ebookRepository;
     }
-    private Ebook execte(String isbn){
+    Ebook execte(String isbn){
         return this.ebookRepository.obtain(isbn);
     }
 }
