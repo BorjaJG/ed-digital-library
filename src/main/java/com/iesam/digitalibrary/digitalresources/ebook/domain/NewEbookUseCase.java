@@ -7,7 +7,7 @@ public class NewEbookUseCase {
         this.ebookRepository = ebookRepository;
     }
 
-    private void  execute(Ebook ebook){
+    void  execute(Ebook ebook){
         this.ebookRepository.save(ebook);
     }
 
