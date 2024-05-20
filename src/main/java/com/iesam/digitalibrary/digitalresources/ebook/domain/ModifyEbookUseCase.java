@@ -8,7 +8,7 @@ public class ModifyEbookUseCase {
         this.ebookRepository = ebookRepository;
     }
 
-    private void execute(Ebook ebook){
+    void execute(Ebook ebook){
         this.ebookRepository.modify(ebook);
     }
 
