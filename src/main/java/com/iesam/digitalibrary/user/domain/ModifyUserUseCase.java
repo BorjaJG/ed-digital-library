@@ -9,7 +9,7 @@ public class ModifyUserUseCase {
         this.userRepository = userRepository;
     }
 
-    private void  execute(User user){
+    void  execute(User user){
         this.userRepository.modify(user);
     }
 }
