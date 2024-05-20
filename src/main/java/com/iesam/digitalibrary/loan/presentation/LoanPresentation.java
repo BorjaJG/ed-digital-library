@@ -1,13 +1,11 @@
 package com.iesam.digitalibrary.loan.presentation;
 
-
 import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
+
 import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
 import com.iesam.digitalibrary.loan.data.LoanDataRepository;
 import com.iesam.digitalibrary.loan.data.local.LoanFileLocalDataSource;
 import com.iesam.digitalibrary.loan.domain.Loan;
-import com.iesam.digitalibrary.user.data.UserDataRepository;
-import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 import com.iesam.digitalibrary.user.presentation.UserPresentation;
 
@@ -19,8 +17,9 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class LoanPresentation {
-    private static Scanner scanner = new Scanner(System.in);
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789";
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final Random random = new Random();
 
     public static void main(String[] args) {
@@ -28,10 +27,10 @@ public class LoanPresentation {
         scanner.close();
     }
 
+    // Display main menu
     public static void showMenu() {
         while (true) {
-
-            menuConsola();
+            displayMenuOptions();
 
             int option = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -44,15 +43,18 @@ public class LoanPresentation {
                     deleteLoan();
                     break;
                 case 3:
-                    //listLoanNotOutstanding();
+                    listLoansNonOutstanding();
                     break;
                 case 4:
-                    listLoanOutstanding();
+                    listOutstandingLoans();
                     break;
                 case 5:
-                    listLoan();
+                    listAllLoans();
                     break;
                 case 6:
+                    modifyLoan();
+                    break;
+                case 7:
                     System.out.println("Exiting...");
                     return;
                 default:
@@ -60,27 +62,34 @@ public class LoanPresentation {
             }
         }
     }
-
-    public static void addLoan() {
-        Loan loan = readUserDetails();
+    public static void modifyLoan() {
+        Loan loan = setLoanReturnDate();
+        if (loan != null) {
+            modifyLoan(loan);
+        }
+    }
+    // Add a new loan
+    private static void addLoan() {
+        Loan loan = readLoanDetails();
         if (loan != null) {
             saveLoan(loan);
         }
     }
 
-    public static Loan readUserDetails() {
+    // Read loan details from user
+    private static Loan readLoanDetails() {
         System.out.println("Enter Loan Information:");
-        String idLoan;
-        idLoan = generateUniqueID(8);
+        String idLoan = generateUniqueID(8);
         System.out.println("Generated Loan ID: " + idLoan);
-        System.out.print("fechaI: ");
-        Date fechaI = generateDate();
-        System.out.print("fechaF: ");
-        Date fechaF = generateDateFiveDaysAhead();
-        System.out.println("fechaE: No se tine este dato aun ");
-        Date fechaE = null;
+        System.out.print("Start Date: ");
+        Date startDate = generateCurrentDate();
+        System.out.print("End Date: ");
+        Date endDate = generateDateFiveDaysAhead();
+        Date returnDate = null;
+
         User user = null;
         DigitalResource digitalResource = null;
+
         while (user == null || digitalResource == null) {
             System.out.print("User: ");
             user = UserPresentation.searchUser();
@@ -94,48 +103,47 @@ public class LoanPresentation {
                 System.out.println("Digital resource not found. Please try again.");
             }
         }
-        return new Loan(idLoan, digitalResource, user, fechaI, fechaF, fechaE);
 
-
+        return new Loan(idLoan, digitalResource, user, startDate, endDate, returnDate);
     }
 
-
-    public static void saveLoan(Loan loan) {
+    // Save loan to the repository
+    private static void saveLoan(Loan loan) {
         LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
         loanRepository.save(loan);
         System.out.println("Loan saved successfully.");
     }
 
-    public static void menuConsola() {
-        System.out.println("\nBienvenido al sistema de la biblioteca");
+    // Display menu options
+    private static void displayMenuOptions() {
+        System.out.println("\nWelcome to the Library System");
         System.out.println("----------------------------------");
-        System.out.println("|     User Management System     |");
+        System.out.println("|     Loan Management System     |");
         System.out.println("----------------------------------");
         System.out.println("|  Options:                      |");
         System.out.println("|  1. Add Loan                   |");
         System.out.println("|  2. Delete Loan                |");
-        System.out.println("|  3. List Loan not Outstanding  |");
-        System.out.println("|  4. List  Outstanding         |");
+        System.out.println("|  3. List Non-Outstanding Loans |");
+        System.out.println("|  4. List Outstanding Loans     |");
         System.out.println("|  5. List All Loans             |");
-        System.out.println("|  6. Exit                       |");
+        System.out.println("|  6. Return an eBook            |");
+        System.out.println("|  7. Exit                       |");
         System.out.println("----------------------------------");
         System.out.print("Select an option: ");
     }
 
-
-    public static String generateUniqueID(int length) {
+    // Generate a unique ID
+    private static String generateUniqueID(int length) {
         StringBuilder sb = new StringBuilder(length);
-
         for (int i = 0; i < length; i++) {
             int randomIndex = random.nextInt(CHARACTERS.length());
-            char randomChar = CHARACTERS.charAt(randomIndex);
-            sb.append(randomChar);
+            sb.append(CHARACTERS.charAt(randomIndex));
         }
-
         return sb.toString();
     }
 
-    public static void deleteLoan() {
+    // Delete loan
+    private static void deleteLoan() {
         System.out.print("Enter Loan ID to delete: ");
         String idLoan = scanner.nextLine();
         if (!idLoan.isEmpty()) {
@@ -145,53 +153,92 @@ public class LoanPresentation {
         }
     }
 
-    public static void deleteLoanById(String idLoan) {
-        LoanDataRepository LoanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
-        LoanRepository.delete(idLoan);
+    // Delete loan by ID
+    private static void deleteLoanById(String idLoan) {
+        LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        loanRepository.delete(idLoan);
         System.out.println("Loan deleted successfully.");
     }
 
-
-    public static Date generateDate() {
+    // Generate current date
+    private static Date generateCurrentDate() {
         LocalDate currentDate = LocalDate.now();
-        System.out.println("Current Date: " + currentDate);
         return Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-
-    public static Date generateDateFiveDaysAhead() {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate futureDate = currentDate.plusDays(5);
-        System.out.println("Date Five Days Ahead: " + futureDate);
+    // Generate date five days ahead
+    private static Date generateDateFiveDaysAhead() {
+        LocalDate futureDate = LocalDate.now().plusDays(5);
         return Date.from(futureDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
-
-    private static void listLoan() {
-        System.out.println("List of Loans:");
+    // List all loans
+    private static void listAllLoans() {
+        System.out.println("List of All Loans:");
         LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
         ArrayList<Loan> loans = loanRepository.findAll();
-        for (Loan loan: loans) {
-            System.out.println(loan.toString());
+        for (Loan loan : loans) {
+            System.out.println(loan);
         }
     }
 
-
-    private static void listLoanOutstanding() {
-        System.out.println("List of Loans Outstanding:");
+    // List outstanding loans
+    private static void listOutstandingLoans() {
+        System.out.println("List of Outstanding Loans:");
         LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
         ArrayList<Loan> loans = loanRepository.findAll();
-        for (Loan loan: loans) {
+        for (Loan loan : loans) {
             if (loan.fechaE == null) {
+                System.out.println(loan);
+            }
+        }
+    }
+
+    // List non-outstanding loans
+    private static void listLoansNonOutstanding() {
+        System.out.println("List of Non-Outstanding Loans:");
+        LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        ArrayList<Loan> loans = loanRepository.findAll();
+        for (Loan loan : loans) {
+            if (loan.fechaE != null) {
                 System.out.println(loan.toString());
             }
         }
     }
 
+    // Set eBook return date
+    private static Loan setLoanReturnDate() {
+        System.out.print("Enter Loan ID to search: ");
+        String idLoan = scanner.nextLine();
+        Loan loan = getLoanById(idLoan);
 
+        if (loan != null) {
+            System.out.println("Loan found:");
+            System.out.println(loan);
+            DigitalResource digitalResource = loan.digitalResource;
+            User user = loan.user;
+            Date fechaI = loan.fechaI;
+            Date fechaF = loan.fechaF;
+            Date fechaE = generateCurrentDate();
+            System.out.println(fechaE);
+            return new Loan(idLoan, digitalResource, user, fechaI, fechaF, fechaE);
+        } else {
+            System.out.println("Loan not found with ID: " + idLoan);
+        }
+        System.out.println("Loan: " + loan);
+        return loan;
+    }
 
+    // Get loan by ID
+    private static Loan getLoanById(String idLoan) {
+        LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        return loanRepository.findById(idLoan);
+    }
 
-
+    private static void modifyLoan(Loan loan) {
+        LoanDataRepository loanRepository = new LoanDataRepository(new LoanFileLocalDataSource());
+        loanRepository.modify(loan);
+    }
 
 
 
@@ -201,4 +248,3 @@ public class LoanPresentation {
 
 
 }
-

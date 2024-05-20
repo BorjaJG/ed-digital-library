@@ -10,4 +10,8 @@ public interface LoanRepository {
     void deleteLoan(String idLoan);
 
     ArrayList<User> lits();
+
+    Loan obtain(String idLoan);
+
+    void modify(Loan loan);
 }

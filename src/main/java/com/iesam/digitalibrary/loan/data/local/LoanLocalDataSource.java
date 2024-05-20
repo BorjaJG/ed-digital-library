@@ -9,6 +9,14 @@ import java.util.ArrayList;
 public interface LoanLocalDataSource {
 
     void save(Loan loan);
+
     ArrayList<Loan> findAll();
+
     void delete(String idLoan);
+
+    Loan findById(String idLoan);
+
+    void modify(Loan loan);
 }
+
+
