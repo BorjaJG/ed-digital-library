@@ -11,7 +11,7 @@ public class ListUsersUseCase {
         this.userRepository = userRepository;
     }
 
-    private ArrayList<User>  execute(){
+    ArrayList<User>  execute(){
         return userRepository.lits();
     }
 
