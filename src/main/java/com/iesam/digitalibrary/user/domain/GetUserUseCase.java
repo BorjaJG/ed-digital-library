@@ -8,7 +8,7 @@ public class GetUserUseCase {
         this.userRepository = userRepository;
     }
 
-    private User execte(String userID){
+    User execute(String userID){
         return this.userRepository.obtain(userID);
     }
 
