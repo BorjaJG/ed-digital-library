@@ -69,6 +69,8 @@ public class LoanFileLocalDataSource implements LoanLocalDataSource {
         return null;
     }
 
+
+
     public ArrayList<Loan> findAll() {
         try {
             File myObj = new File(nameFile);
@@ -91,7 +93,11 @@ public class LoanFileLocalDataSource implements LoanLocalDataSource {
         }
         return new ArrayList<>();
     }
-
+    @Override
+    public void modify(Loan loan) {
+        delete(loan.idLoan);
+        save(loan);
+    }
 
 
 
