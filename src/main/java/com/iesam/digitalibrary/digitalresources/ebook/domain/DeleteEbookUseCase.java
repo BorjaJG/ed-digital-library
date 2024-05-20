@@ -9,7 +9,7 @@ public class DeleteEbookUseCase {
         this.ebookRepository = ebookRepository;
     }
 
-    private void execute(String isbn){
+    void execute(String isbn){
         this.ebookRepository.delete(isbn);
 
     }
