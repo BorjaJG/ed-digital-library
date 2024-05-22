@@ -98,17 +98,16 @@ public class LoanPresentation {
         System.out.println("Enter Loan Information:");
         String idLoan = generateUniqueID(8);
         System.out.println("Generated Loan ID: " + idLoan);
-        System.out.print("Start Date: ");
         Date startDate = generateCurrentDate();
-        System.out.print("End Date: ");
+        System.out.println("Start Date: " + startDate);
         Date endDate = generateDateFiveDaysAhead();
+        System.out.println("End Date: " + endDate);
         Date returnDate = null;
-
         User user = null;
         DigitalResource digitalResource = null;
 
         while (user == null || digitalResource == null) {
-            System.out.print("DigitalResource: ");
+            System.out.println("DigitalResource: ");
             digitalResource = DigitalresourcePresentation.searchDG();
             if (digitalResource == null) {
                 System.out.println("Digital resource not found. Please try again.");
