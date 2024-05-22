@@ -8,7 +8,7 @@ public class DeleteLoanUseCase {
         this.loanRepository = loanRepository;
     }
 
-    private void execute(String idLoan){
+    void execute(String idLoan){
         this.loanRepository.deleteLoan(idLoan);
     }
 

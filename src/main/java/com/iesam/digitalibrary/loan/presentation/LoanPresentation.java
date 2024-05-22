@@ -91,17 +91,17 @@ public class LoanPresentation {
         DigitalResource digitalResource = null;
 
         while (user == null || digitalResource == null) {
+            System.out.print("DigitalResource: ");
+            digitalResource = DigitalresourcePresentation.searchDG();
+            if (digitalResource == null) {
+                System.out.println("Digital resource not found. Please try again.");
+            }
             System.out.print("User: ");
             user = UserPresentation.searchUser();
             if (user == null) {
                 System.out.println("User not found. Please try again.");
             }
 
-            System.out.print("DigitalResource: ");
-            digitalResource = DigitalresourcePresentation.searchDG();
-            if (digitalResource == null) {
-                System.out.println("Digital resource not found. Please try again.");
-            }
         }
 
         return new Loan(idLoan, digitalResource, user, startDate, endDate, returnDate);

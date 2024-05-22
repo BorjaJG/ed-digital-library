@@ -10,7 +10,7 @@ public class GetLoanUseCase {
         this.loanRepository = loanRepository;
     }
 
-    private Loan execte(String idLoan){
+    Loan execute(String idLoan){
         return this.loanRepository.obtain(idLoan);
     }
 

@@ -6,7 +6,7 @@ public class GetDigitalResourceUseCase {
     public GetDigitalResourceUseCase(DigitalResourceRepository digitalResourceRepository) {
         this.digitalResourceRepository = digitalResourceRepository;
     }
-    private void execute(String idDigitalResource){
+    void execute(String idDigitalResource){
         this.digitalResourceRepository.ObtainDR(idDigitalResource);
     }
 }
