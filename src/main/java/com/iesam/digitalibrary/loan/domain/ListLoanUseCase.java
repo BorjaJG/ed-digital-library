@@ -3,15 +3,16 @@ package com.iesam.digitalibrary.loan.domain;
 import java.util.ArrayList;
 
 public class ListLoanUseCase {
-
+    // Dependency on LoanRepository
     public LoanRepository loanRepository;
 
-
+    // Constructor to initialize LoanRepository
     public ListLoanUseCase(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
     }
 
-    private ArrayList<Loan> execute() {
-        return loanRepository.lits();
+    // Method to execute listing all loans
+    private ArrayList<Loan> executeList() {
+        return loanRepository.list(); // Call list method of LoanRepository to get all loans
     }
 }

@@ -1,15 +1,18 @@
 package com.iesam.digitalibrary.digitalresources.ebook.domain;
 
-import com.iesam.digitalibrary.user.domain.User;
 
 public class GetEbookUseCase {
 
-    public EbookRepository ebookRepository;
+    // Dependency on EbookRepository
+    private EbookRepository ebookRepository;
 
+    // Constructor to initialize EbookRepository
     public GetEbookUseCase(EbookRepository ebookRepository) {
         this.ebookRepository = ebookRepository;
     }
-    Ebook execte(String isbn){
-        return this.ebookRepository.obtain(isbn);
+
+    // Method to execute obtaining an ebook by ISBN
+    Ebook execute(String isbn) {
+        return this.ebookRepository.obtain(isbn); // Call obtain method of EbookRepository to obtain the ebook
     }
 }

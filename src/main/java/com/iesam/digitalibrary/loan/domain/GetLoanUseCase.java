@@ -4,17 +4,17 @@ import com.iesam.digitalibrary.user.domain.User;
 
 public class GetLoanUseCase {
 
-    public LoanRepository loanRepository;
+    // Dependency on LoanRepository
+    private LoanRepository loanRepository;
 
+    // Constructor to initialize LoanRepository
     public GetLoanUseCase(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
     }
 
-    Loan execute(String idLoan){
-        return this.loanRepository.obtain(idLoan);
+    // Method to execute obtaining a loan by ID
+    Loan execute(String idLoan) {
+        return this.loanRepository.obtain(idLoan); // Call obtain method of LoanRepository
     }
-
-
-
 
 }

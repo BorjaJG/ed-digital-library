@@ -8,14 +8,15 @@ import java.util.Date;
 
 public class Loan {
 
-
+    // Attributes
     public final String idLoan;
     public final DigitalResource digitalResource;
     public final User user;
-    public final Date fechaI;
-    public final Date fechaF;
-    public final Date fechaE;
+    public final Date fechaI; // Loan start date
+    public final Date fechaF; // Loan end date
+    public final Date fechaE; // Expected return date
 
+    // Constructor
     public Loan(String idLoan, DigitalResource digitalResource, User user, Date fechaI, Date fechaF, Date fechaE) {
         this.idLoan = idLoan;
         this.digitalResource = digitalResource;
@@ -25,6 +26,7 @@ public class Loan {
         this.fechaE = fechaE;
     }
 
+    // toString method to represent object as a String
     @Override
     public String toString() {
         return "Loan{" +

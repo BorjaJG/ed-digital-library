@@ -8,13 +8,18 @@ import java.util.ArrayList;
 public interface UserLocalDataSource {
 
 
+    // Save a user
     void save(User user);
+
+    // Find a user by ID
     User findById(String userId);
 
-    void delete(String userID);
+    // Delete a user by ID
+    void delete(String userId);
 
-
+    // Modify a user
     void modify(User user);
 
+    // Find all users
     ArrayList<User> findAll();
 }

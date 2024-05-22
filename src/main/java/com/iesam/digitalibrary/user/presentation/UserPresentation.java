@@ -1,30 +1,34 @@
 package com.iesam.digitalibrary.user.presentation;
 
 
+import com.iesam.Main;
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class UserPresentation {
+
+    // Static scanner for reading user input
     private static Scanner scanner = new Scanner(System.in);
+
+    // Set of characters for generating unique IDs
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789";
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
-        showMenu();
-        scanner.close();
+        showMenu();// Display the user menu
+        scanner.close();// Close the scanner at the end
     }
 
+    // Method to display the user menu
     public static void showMenu() {
-        while (true) {
-
-            menuConsola();
+        while (true) {// Infinite loop until the user chooses to exit
+            menuConsola();// Display the menu in the console
 
             int option = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -43,27 +47,34 @@ public class UserPresentation {
                     searchUser();
                     break;
                 case 5:
-                     listUser();
+                    listUser();
                     break;
                 case 6:
-                    System.out.println("Exiting...");
+                    Main.showMainMenu();
+                    break;
+                case 7:
+                    printColor("Exiting...", "red");// Exit the program
                     return;
                 default:
-                    System.out.println("Invalid option. Please select a valid option.");
+                    printColor("Invalid option. Please select a valid option.", "red"); // Handle invalid option
             }
         }
     }
 
+    // Method to add a user
     public static void addUser() {
-        User user = readUserDetails();
+        User user = readUserDetails();// Read user details
         if (user != null) {
-            saveUser(user);
+            saveUser(user);// Save user if details are valid
+            printColor("User saved successfully.", "green");
         }
     }
 
+    // Method to read user details from input
     public static User readUserDetails() {
         System.out.println("Enter User Information:");
-        //String userId = generateUniqueID(8);
+
+        // Generate a unique user ID
         String userId;
         do {
             userId = generateUniqueID(8);
@@ -113,62 +124,65 @@ public class UserPresentation {
                 history, fines, transactions, notificationPreference, roleId, additionalData);
     }
 
-
+    // Method to save a user
     public static void saveUser(User user) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         userRepository.save(user);
         System.out.println("User saved successfully.");
     }
 
-
+    // Method to search for a user by ID
     public static User searchUser() {
         System.out.print("Enter User ID to search: ");
         String userId = scanner.nextLine();
         User user = getUserById(userId);
         if (user != null) {
             System.out.println("User found:");
-            System.out.println(user.toStringCarnet());
+            System.out.println(user.toString());
         } else {
             System.out.println("User not found with ID: " + userId);
         }
         return user;
     }
 
+    // Method to get a user by ID
     public static User getUserById(String userId) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         return userRepository.obtain(userId);
     }
 
-
+    // Method to check if a user ID is already taken
     public static boolean isUserIdTaken(String userId) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         User existingUser = userRepository.obtain(userId);
         return existingUser != null;
     }
 
-
+    // Method to display the user menu in the console
     public static void menuConsola() {
-        System.out.println("\nBienvenido al sistema de la biblioteca");
-        System.out.println("----------------------------------");
-        System.out.println("|     User Management System     |");
-        System.out.println("----------------------------------");
-        System.out.println("|  Options:                      |");
-        System.out.println("|  1. Add User                   |");
-        System.out.println("|  2. Modify User                |");
-        System.out.println("|  3. Delete User                |");
-        System.out.println("|  4. Search User                |");
-        System.out.println("|  5. List All Users             |");
-        System.out.println("|  6. Exit                       |");
-        System.out.println("----------------------------------");
+        printColor("Welcome to the Library System ", "cyan");
+        printColor("USER", "yellow");
+        printColor("----------------------------------", "cyan");
+        printColor("|     User Management System     |", "cyan");
+        printColor("----------------------------------", "cyan");
+        printColor("|  Options:                      |", "cyan");
+        printColor("|  1. Add User                   |", "blue");
+        printColor("|  2. Modify User                |", "blue");
+        printColor("|  3. Delete User                |", "blue");
+        printColor("|  4. Search User                |", "blue");
+        printColor("|  5. List All Users             |", "blue");
+        printColor("|  6. Return  Library            |", "blue");
+        printColor("|  7. Exit                       |", "blue");
+        printColor("----------------------------------", "cyan");
         System.out.print("Select an option: ");
     }
 
-
+    // Method to generate a unique ID of a given length
     public static String generateUniqueID(int length) {
         StringBuilder sb = new StringBuilder(length);
 
         for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(CHARACTERS.length());
+            int randomIndex = RANDOM.nextInt(CHARACTERS.length());
             char randomChar = CHARACTERS.charAt(randomIndex);
             sb.append(randomChar);
         }
@@ -176,12 +190,14 @@ public class UserPresentation {
         return sb.toString();
     }
 
+    // Method to generate an email address based on name and ID
     public static String generarCorreoElectronico(String nombre, String id) {
         // Format the email address: nombre + id + "@biblio.com"
         String correo = nombre + id + "@biblio.com";
         return correo;
     }
 
+    // Method to delete a user by ID
     public static void deleteUser() {
         System.out.print("Enter User ID to delete: ");
         String userId = scanner.nextLine();
@@ -192,97 +208,148 @@ public class UserPresentation {
         }
     }
 
+    // Method to delete a user by ID
     public static void deleteUserById(String userId) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         userRepository.delete(userId);
         System.out.println("User deleted successfully.");
     }
 
+    // Method to modify a user
     public static void modifyUser() {
         User user = readModyUserDetails();
         if (user != null) {
             modifyUser(user);
+            printColor("User modify successfully.", "green");
         }
     }
 
+    // Method to read modified user details from input
     private static User readModyUserDetails() {
 
-            System.out.println("Enter User Information:");
-            //String userId = generateUniqueID(8);
-            String userId;
-            do {
-                System.out.println("Enter ID:");
-                userId = scanner.nextLine();
-                if (doesUserIdTaken(userId)) {
-                    System.out.println("Identification does not exist. Please enter a different ID.");
-                }
-            } while (doesUserIdTaken(userId));
-            System.out.println("Generated User ID: " + userId);
+        System.out.println("Enter User Information:");
+        //String userId = generateUniqueID(8);
+        String userId;
+        do {
+            System.out.println("Enter ID:");
+            userId = scanner.nextLine();
+            if (doesUserIdTaken(userId)) {
+                System.out.println("Identification does not exist. Please enter a different ID.");
+            }
+        } while (doesUserIdTaken(userId));
+        System.out.println("Generated User ID: " + userId);
 
-            System.out.print("Name: ");
-            String name = scanner.nextLine();
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
 
-            System.out.print("Role ID: ");
-            String roleId = scanner.nextLine();
+        System.out.print("Role ID: ");
+        String roleId = scanner.nextLine();
 
-            String email = generarCorreoElectronico(name, userId);
-            System.out.println("Email: " + email);
+        String email = generarCorreoElectronico(name, userId);
+        System.out.println("Email: " + email);
 
-            System.out.print("Phone Number: ");
-            String phoneNumber = scanner.nextLine();
+        System.out.print("Phone Number: ");
+        String phoneNumber = scanner.nextLine();
 
-            System.out.print("Address: ");
-            String address = scanner.nextLine();
+        System.out.print("Address: ");
+        String address = scanner.nextLine();
 
-            System.out.print("Registration Date: ");
-            String registrationDate = scanner.nextLine();
+        System.out.print("Registration Date: ");
+        String registrationDate = scanner.nextLine();
 
-            System.out.print("Status: ");
-            String status = scanner.nextLine();
+        System.out.print("Status: ");
+        String status = scanner.nextLine();
 
-            System.out.print("History: ");
-            String history = scanner.nextLine();
+        System.out.print("History: ");
+        String history = scanner.nextLine();
 
-            System.out.print("Fines: ");
-            String fines = scanner.nextLine();
+        System.out.print("Fines: ");
+        String fines = scanner.nextLine();
 
-            System.out.print("Transactions: ");
-            String transactions = scanner.nextLine();
+        System.out.print("Transactions: ");
+        String transactions = scanner.nextLine();
 
-            System.out.print("Notification Preference: ");
-            String notificationPreference = scanner.nextLine();
+        System.out.print("Notification Preference: ");
+        String notificationPreference = scanner.nextLine();
 
-            System.out.print("User Type: ");
-            String userType = scanner.nextLine();
+        System.out.print("User Type: ");
+        String userType = scanner.nextLine();
 
-            System.out.print("Additional Data: ");
-            String additionalData = scanner.nextLine();
+        System.out.print("Additional Data: ");
+        String additionalData = scanner.nextLine();
 
-            return new User(userId, name, email, phoneNumber, address, registrationDate, userType, status,
-                    history, fines, transactions, notificationPreference, roleId, additionalData);
+        return new User(userId, name, email, phoneNumber, address, registrationDate, userType, status,
+                history, fines, transactions, notificationPreference, roleId, additionalData);
 
     }
+
+    // Method to check if a user ID exists
     public static boolean doesUserIdTaken(String userId) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         User existingUser = userRepository.obtain(userId);
         return existingUser == null;
     }
 
+    // Method to update a user
     private static void modifyUser(User user) {
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
         userRepository.modify(user);
     }
 
-
-
+    // Method to list all users
     private static void listUser() {
         System.out.println("List of Users:");
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
-        ArrayList<User> users = userRepository.lits();
+        ArrayList<User> users = userRepository.list();
         for (User user : users) {
-            System.out.println(user.toStringCarnet());
+            System.out.println(user.toString());
         }
     }
 
+    // Method to print colored text
+    public static void printColor(String text, String color) {
+        // ANSI code for colors
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_BLACK = "\u001B[30m";
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_YELLOW = "\u001B[33m";
+        String ANSI_BLUE = "\u001B[34m";
+        String ANSI_PURPLE = "\u001B[35m";
+        String ANSI_CYAN = "\u001B[36m";
+        String ANSI_WHITE = "\u001B[37m";
+
+        // Selecting color based on input
+        String chosenColor = ANSI_RESET; // Default color
+        switch (color.toLowerCase()) {
+            case "black":
+                chosenColor = ANSI_BLACK;
+                break;
+            case "red":
+                chosenColor = ANSI_RED;
+                break;
+            case "green":
+                chosenColor = ANSI_GREEN;
+                break;
+            case "yellow":
+                chosenColor = ANSI_YELLOW;
+                break;
+            case "blue":
+                chosenColor = ANSI_BLUE;
+                break;
+            case "purple":
+                chosenColor = ANSI_PURPLE;
+                break;
+            case "cyan":
+                chosenColor = ANSI_CYAN;
+                break;
+            case "white":
+                chosenColor = ANSI_WHITE;
+                break;
+        }
+
+        // Print text in chosen color
+        System.out.println(chosenColor + text + ANSI_RESET);
+    }
 }
 

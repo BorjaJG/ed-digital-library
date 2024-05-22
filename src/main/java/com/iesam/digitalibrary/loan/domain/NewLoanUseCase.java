@@ -2,13 +2,17 @@ package com.iesam.digitalibrary.loan.domain;
 
 public class NewLoanUseCase{
 
-public LoanRepository loanRepository;
+    // Dependency on LoanRepository
+    private LoanRepository loanRepository;
 
+    // Constructor to initialize LoanRepository
     public NewLoanUseCase(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
     }
-    public void   execute(Loan loan){
-        this.loanRepository.save(loan);
+
+    // Method to execute saving a new loan
+    public void execute(Loan loan){
+        this.loanRepository.save(loan); // Call save method of LoanRepository to save the new loan
     }
 
 

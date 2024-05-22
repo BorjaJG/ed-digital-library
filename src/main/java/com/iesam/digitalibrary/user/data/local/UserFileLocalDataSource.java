@@ -1,7 +1,6 @@
 package com.iesam.digitalibrary.user.data.local;
 
 
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.iesam.digitalibrary.user.domain.User;
@@ -15,55 +14,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-public class UserFileLocalDataSource  implements UserLocalDataSource {
 
-    private String nameFile = "User.txt";
-
+public class UserFileLocalDataSource implements UserLocalDataSource {
+    private final String folderName = "dataStore";
+    private final String fileName = "User.txt";
+    private final String filePath = folderName + File.separator + fileName;
     private Gson gson = new Gson();
-
     private final Type typeList = new TypeToken<ArrayList<User>>() {
     }.getType();
 
+    // Save a user to the file
     public void save(User user) {
         List<User> users = findAll();
         users.add(user);
         saveToFile(users);
-
     }
 
+    // Save a list of users to the file
     public void saveList(List<User> users) {
         saveToFile(users);
     }
 
+    // Internal method to save data to the file
     private void saveToFile(List<User> users) {
         try {
-            FileWriter myWriter = new FileWriter(nameFile);
+            FileWriter myWriter = new FileWriter(filePath);
             myWriter.write(gson.toJson(users));
             myWriter.close();
-            System.out.println("Datos guardados correctamente");
+            System.out.println("Data saved successfully");
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error al guardar la información.");
+            System.out.println("An error occurred while saving the data.");
             e.printStackTrace();
         }
     }
 
+    // Find a user by ID
     public User findById(String id) {
-        List<User> user = findAll();
-        for (User model : user) {
-            if (Objects.equals(model.userID, id)) {
-                return model;
+        List<User> users = findAll();
+        for (User user : users) {
+            if (Objects.equals(user.userID, id)) {
+                return user;
             }
         }
         return null;
     }
 
+    // Find all users from the file
     public ArrayList<User> findAll() {
         try {
-            File myObj = new File(nameFile);
-            if (!myObj.exists()) {
-                myObj.createNewFile();
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
             }
-            Scanner myReader = new Scanner(myObj);
+            Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 myReader.close();
@@ -71,31 +74,31 @@ public class UserFileLocalDataSource  implements UserLocalDataSource {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Ha ocurrido un error al obtener el listado.");
+            System.out.println("An error occurred while retrieving the list.");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error al crear el fichero.");
+            System.out.println("An error occurred while creating the file.");
             throw new RuntimeException(e);
         }
         return new ArrayList<>();
     }
 
+    // Delete a user by ID
     public void delete(String userId) {
         List<User> newList = new ArrayList<>();
-        List<User> models = findAll();
-        for (User model : models) {
-            if (!model.userID.equals(userId)){
-                newList.add(model);
+        List<User> users = findAll();
+        for (User user : users) {
+            if (!user.userID.equals(userId)) {
+                newList.add(user);
             }
         }
         saveList(newList);
     }
 
-    @Override
+    // Modify a user
     public void modify(User user) {
-        delete(user.userID);
-        save(user);
-
+        delete(user.userID); // Delete the user with the given ID
+        save(user); // Save the modified user
     }
 
 
