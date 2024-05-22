@@ -14,51 +14,61 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
+
 public class LoanFileLocalDataSource implements LoanLocalDataSource {
+    // File name for storing loan data
+    private final String folderName = "dataStore";
+    private final String fileName = "Loan.txt";
+    private final String filePath = folderName + File.separator + fileName;
 
-    private String nameFile = "Loan.txt";
-
+    // Gson instance for JSON serialization/deserialization
     private Gson gson = new Gson();
 
+    // Type token for Gson to deserialize ArrayList<Loan>
     private final Type typeList = new TypeToken<ArrayList<Loan>>() {
     }.getType();
 
+    // Save a loan to the file
+    @Override
     public void save(Loan loan) {
         List<Loan> loans = findAll();
         loans.add(loan);
         saveToFile(loans);
-
     }
 
+    // Delete a loan by ID from the file
     @Override
     public void delete(String idLoan) {
         List<Loan> newList = new ArrayList<>();
-        List<Loan> models = findAll();
-        for (Loan model : models) {
-            if (!model.idLoan.equals(idLoan)) {
-
-                newList.add(model);
+        List<Loan> loans = findAll();
+        for (Loan loan : loans) {
+            if (!loan.idLoan.equals(idLoan)) {
+                newList.add(loan);
             }
         }
         saveList(newList);
     }
 
+    // Save a list of loans to the file
     public void saveList(List<Loan> loans) {
         saveToFile(loans);
     }
 
+    // Internal method to save data to the file
     private void saveToFile(List<Loan> loans) {
         try {
-            FileWriter myWriter = new FileWriter(nameFile);
+            FileWriter myWriter = new FileWriter(filePath);
             myWriter.write(gson.toJson(loans));
             myWriter.close();
-            System.out.println("Datos guardados correctamente");
+            System.out.println("Data saved successfully");
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error al guardar la información.");
+            System.out.println("An error occurred while saving the data.");
             e.printStackTrace();
         }
     }
 
+    // Find a loan by ID from the file
+    @Override
     public Loan findById(String id) {
         List<Loan> loans = findAll();
         for (Loan loan : loans) {
@@ -69,15 +79,15 @@ public class LoanFileLocalDataSource implements LoanLocalDataSource {
         return null;
     }
 
-
-
+    // Find all loans from the file
+    @Override
     public ArrayList<Loan> findAll() {
         try {
-            File myObj = new File(nameFile);
-            if (!myObj.exists()) {
-                myObj.createNewFile();
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.createNewFile();
             }
-            Scanner myReader = new Scanner(myObj);
+            Scanner myReader = new Scanner(file);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 myReader.close();
@@ -85,22 +95,19 @@ public class LoanFileLocalDataSource implements LoanLocalDataSource {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("Ha ocurrido un error al obtener el listado.");
+            System.out.println("An error occurred while retrieving the list.");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("Ha ocurrido un error al crear el fichero.");
+            System.out.println("An error occurred while creating the file.");
             throw new RuntimeException(e);
         }
         return new ArrayList<>();
     }
+
+    // Modify a loan in the file
     @Override
     public void modify(Loan loan) {
-        delete(loan.idLoan);
-        save(loan);
+        delete(loan.idLoan); // Delete the existing loan
+        save(loan); // Save the modified loan
     }
-
-
-
-
-
 }

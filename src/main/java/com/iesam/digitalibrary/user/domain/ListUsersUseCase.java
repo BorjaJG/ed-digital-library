@@ -4,17 +4,16 @@ import java.util.ArrayList;
 
 public class ListUsersUseCase {
 
-
+    // Declare a dependency on UserRepository
     public UserRepository userRepository;
 
+    // Constructor to initialize UserRepository
     public ListUsersUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    ArrayList<User>  execute(){
-        return userRepository.lits();
+    // Method to execute listing all users
+    ArrayList<User> execute(){
+        return userRepository.list(); // Call list method of UserRepository to get all users
     }
-
-
-
 }

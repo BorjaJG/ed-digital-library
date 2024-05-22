@@ -2,15 +2,8 @@ package com.iesam.digitalibrary.user.domain;
 
 public class User {
 
-
-    /*
-       Los atributos incluyen la identificación del usuario, su nombre, correo electrónico, número de teléfono,
-       dirección, fecha de registro, tipo de usuario, estado de la cuenta, historial de préstamos, multas,
-       historial de transacciones, preferencias de notificación, rol de usuario y datos adicionales.
-       Estos son datos clave para gestionar la información del usuario en el sistema.
-     */
-
-    public final  String userID;
+    // Attributes
+    public final String userID;
     public final String name;
     public final String email;
     public final String phoneNumber;
@@ -25,6 +18,7 @@ public class User {
     public final String userRole;
     public final String additionalData;
 
+    // Constructor
     public User(String userID, String name, String email, String phoneNumber,
                 String address, String registrationDate, String userType, String accountStatus,
                 String loanHistory, String fines, String transactionHistory,
@@ -45,20 +39,24 @@ public class User {
         this.additionalData = additionalData;
     }
 
-
-
-    public String toStringCarnet() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("───────────────────────────────────\n");
-        sb.append("        CARNET\n");
-        sb.append("───────────────────────────────────\n");
-        sb.append("  User ID:        ").append(userID).append("\n");
-        sb.append("  Name:           ").append(name).append("\n");
-        sb.append("  Email:          ").append(email).append("\n");
-        sb.append("  Phone Number:   ").append(phoneNumber).append("\n");
-        sb.append("  Address:        ").append(address).append("\n");
-        sb.append("───────────────────────────────────\n");
-        return sb.toString();
+    // toString method to represent object as a String
+    @Override
+    public String toString() {
+        return "User{" +
+                "userID='" + userID + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", userType='" + userType + '\'' +
+                ", accountStatus='" + accountStatus + '\'' +
+                ", loanHistory='" + loanHistory + '\'' +
+                ", fines='" + fines + '\'' +
+                ", transactionHistory='" + transactionHistory + '\'' +
+                ", notificationPreferences='" + notificationPreferences + '\'' +
+                ", userRole='" + userRole + '\'' +
+                ", additionalData='" + additionalData + '\'' +
+                '}';
     }
-
 }

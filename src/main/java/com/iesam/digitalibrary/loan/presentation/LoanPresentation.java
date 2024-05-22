@@ -1,5 +1,6 @@
 package com.iesam.digitalibrary.loan.presentation;
 
+import com.iesam.Main;
 import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
 
 import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
@@ -37,42 +38,58 @@ public class LoanPresentation {
 
             switch (option) {
                 case 1:
+                    // Add a new loan
                     addLoan();
                     break;
                 case 2:
+                    // Delete a loan
                     deleteLoan();
                     break;
                 case 3:
+                    // List loans that are not outstanding
                     listLoansNonOutstanding();
                     break;
                 case 4:
+                    // List outstanding loans
                     listOutstandingLoans();
                     break;
                 case 5:
+                    // List all loans
                     listAllLoans();
                     break;
                 case 6:
+                    // Modify a loan
                     modifyLoan();
                     break;
                 case 7:
-                    System.out.println("Exiting...");
+                    Main.showMainMenu();
+                    break;
+                case 8:
+                    // Exit the program
+                    printColor("Exiting...", "red");
                     return;
                 default:
-                    System.out.println("Invalid option. Please select a valid option.");
+                    // Handle invalid option
+                    printColor("Invalid option. Please select a valid option.", "red");
             }
         }
     }
+
+    // Modify a loan
     public static void modifyLoan() {
         Loan loan = setLoanReturnDate();
         if (loan != null) {
             modifyLoan(loan);
+            printColor("Loan modify successfully.", "green");
         }
     }
+
     // Add a new loan
     private static void addLoan() {
         Loan loan = readLoanDetails();
         if (loan != null) {
             saveLoan(loan);
+            printColor("Loan saved successfully.", "green");
         }
     }
 
@@ -81,17 +98,16 @@ public class LoanPresentation {
         System.out.println("Enter Loan Information:");
         String idLoan = generateUniqueID(8);
         System.out.println("Generated Loan ID: " + idLoan);
-        System.out.print("Start Date: ");
         Date startDate = generateCurrentDate();
-        System.out.print("End Date: ");
+        System.out.println("Start Date: " + startDate);
         Date endDate = generateDateFiveDaysAhead();
+        System.out.println("End Date: " + endDate);
         Date returnDate = null;
-
         User user = null;
         DigitalResource digitalResource = null;
 
         while (user == null || digitalResource == null) {
-            System.out.print("DigitalResource: ");
+            System.out.println("DigitalResource: ");
             digitalResource = DigitalresourcePresentation.searchDG();
             if (digitalResource == null) {
                 System.out.println("Digital resource not found. Please try again.");
@@ -116,19 +132,21 @@ public class LoanPresentation {
 
     // Display menu options
     private static void displayMenuOptions() {
-        System.out.println("\nWelcome to the Library System");
-        System.out.println("----------------------------------");
-        System.out.println("|     Loan Management System     |");
-        System.out.println("----------------------------------");
-        System.out.println("|  Options:                      |");
-        System.out.println("|  1. Add Loan                   |");
-        System.out.println("|  2. Delete Loan                |");
-        System.out.println("|  3. List Non-Outstanding Loans |");
-        System.out.println("|  4. List Outstanding Loans     |");
-        System.out.println("|  5. List All Loans             |");
-        System.out.println("|  6. Return an eBook            |");
-        System.out.println("|  7. Exit                       |");
-        System.out.println("----------------------------------");
+        // Print the header and menu with colors
+        printColor("Welcome to the Library System", "cyan");
+        printColor("----------------------------------", "cyan");
+        printColor("|     Loan Management System     |", "cyan");
+        printColor("----------------------------------", "cyan");
+        printColor("|  Options:                      |", "cyan");
+        printColor("|  1. Add Loan                   |", "blue");
+        printColor("|  2. Delete Loan                |", "blue");
+        printColor("|  3. List Non-Outstanding Loans |", "blue");
+        printColor("|  4. List Outstanding Loans     |", "blue");
+        printColor("|  5. List All Loans             |", "blue");
+        printColor("|  6. Return an DG               |", "blue");
+        printColor("|  7. Return Library             |", "blue");
+        printColor("|  8. Exit                       |", "blue");
+        printColor("----------------------------------", "cyan");
         System.out.print("Select an option: ");
     }
 
@@ -240,11 +258,51 @@ public class LoanPresentation {
         loanRepository.modify(loan);
     }
 
+    // Method to printColor
+    public static void printColor(String text, String color) {
+        // ANSI code for colors
+        String ANSI_RESET = "\u001B[0m";
+        String ANSI_BLACK = "\u001B[30m";
+        String ANSI_RED = "\u001B[31m";
+        String ANSI_GREEN = "\u001B[32m";
+        String ANSI_YELLOW = "\u001B[33m";
+        String ANSI_BLUE = "\u001B[34m";
+        String ANSI_PURPLE = "\u001B[35m";
+        String ANSI_CYAN = "\u001B[36m";
+        String ANSI_WHITE = "\u001B[37m";
 
+        // Selecting color based on input
+        String chosenColor = ANSI_RESET; // Default color
+        switch (color.toLowerCase()) {
+            case "black":
+                chosenColor = ANSI_BLACK;
+                break;
+            case "red":
+                chosenColor = ANSI_RED;
+                break;
+            case "green":
+                chosenColor = ANSI_GREEN;
+                break;
+            case "yellow":
+                chosenColor = ANSI_YELLOW;
+                break;
+            case "blue":
+                chosenColor = ANSI_BLUE;
+                break;
+            case "purple":
+                chosenColor = ANSI_PURPLE;
+                break;
+            case "cyan":
+                chosenColor = ANSI_CYAN;
+                break;
+            case "white":
+                chosenColor = ANSI_WHITE;
+                break;
+        }
 
-
-
-
+        // Print text in chosen color
+        System.out.println(chosenColor + text + ANSI_RESET);
+    }
 
 
 }
