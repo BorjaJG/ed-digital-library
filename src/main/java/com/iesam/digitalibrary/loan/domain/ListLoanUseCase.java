@@ -1,7 +1,5 @@
 package com.iesam.digitalibrary.loan.domain;
 
-import com.iesam.digitalibrary.user.domain.User;
-
 import java.util.ArrayList;
 
 public class ListLoanUseCase {
@@ -13,7 +11,7 @@ public class ListLoanUseCase {
         this.loanRepository = loanRepository;
     }
 
-    private ArrayList<User> execute() {
+    private ArrayList<Loan> execute() {
         return loanRepository.lits();
     }
 }

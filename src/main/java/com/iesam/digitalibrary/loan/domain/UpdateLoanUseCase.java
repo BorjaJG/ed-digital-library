@@ -9,7 +9,7 @@ public class UpdateLoanUseCase {
     public UpdateLoanUseCase(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
     }
-    private void  execute(Loan loan){
+    void  execute(Loan loan){
         this.loanRepository.modify(loan);
     }
 }

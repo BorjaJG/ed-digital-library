@@ -9,9 +9,11 @@ public interface LoanRepository {
 
     void deleteLoan(String idLoan);
 
-    ArrayList<User> lits();
+    ArrayList<Loan> lits();
 
     Loan obtain(String idLoan);
 
     void modify(Loan loan);
+
+
 }
