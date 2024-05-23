@@ -7,10 +7,13 @@ import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
 import com.iesam.digitalibrary.digitalresources.ebook.presentation.EbookPresentation;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DigitalresourcePresentation {
+
+
     // Scanner for user input
     private static final Scanner scanner = new Scanner(System.in);
 
@@ -90,21 +93,38 @@ public class DigitalresourcePresentation {
 
     // Method to search for a digital resource by ID
     public static DigitalResource searchDG() {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("Enter Digital Resource ID to search: ");
-        // Read the ID entered by the user
+        // Lee el ID ingresado por el usuario
         String id = scanner.nextLine();
-        // Search for the digital resource in the data repository
+
+        // Busca el recurso digital en el repositorio de datos
         DigitalResource digitalResource = getDGById(id);
+
+        // Verifica si el ID comienza con "m" o "e"
         if (digitalResource != null) {
-            // Display the information if found
+            // Muestra la información si se encuentra
             System.out.println("Digital Resource found:");
             System.out.println(digitalResource.toString());
+
+            if (id.startsWith("m")) {
+                System.out.println("It's a movie."); // Es una película
+                //System.out.println(.toString());
+            } else if (id.startsWith("e")) {
+                System.out.println("It's an ebook.");// Es un ebook
+                //System.out.println(.toString());
+
+            } else {
+                System.out.println("ID doesn't start with 'm' or 'e'."); // El ID no empieza con 'm' ni 'e'
+            }
         } else {
-            // Inform the user if the digital resource is not found
+            // Informa al usuario si el recurso digital no se encuentra
             System.out.println("Digital Resource not found with ID: " + id);
         }
         return digitalResource;
     }
+
+
 
     // Method to retrieve a digital resource by ID from the data repository
     public static DigitalResource getDGById(String id) {

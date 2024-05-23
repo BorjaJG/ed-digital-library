@@ -15,6 +15,8 @@ import java.util.Scanner;
 
 public class UserPresentation {
 
+    //
+
     // Static scanner for reading user input
     private static Scanner scanner = new Scanner(System.in);
 
