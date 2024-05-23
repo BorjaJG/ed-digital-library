@@ -1,20 +1,15 @@
-package com.iesam.digitalibrary.digitalresources.ebook.presentation;
+package com.iesam.digitalibrary.digitalresources.movie.presentation;
 
-import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
-import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
-import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
+import com.iesam.digitalibrary.digitalresources.movie.data.MovieDataRepository;
+import com.iesam.digitalibrary.digitalresources.movie.data.local.MovieResourcesFileLocalDataSource;
+import com.iesam.digitalibrary.digitalresources.movie.domain.domain.Movie;
 import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
-
 
 import java.util.Random;
 import java.util.Scanner;
 
-
-
-
-public class EbookPresentation {
-
-    // Scanner for user input
+public class MoviePresentation {
+    // Scanner for  Movie input
     private static Scanner scanner = new Scanner(System.in);
     // Possible characters for generating unique IDs
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789";
@@ -39,19 +34,19 @@ public class EbookPresentation {
 
             switch (option) {
                 case 1:
-                    addEbook();// Add a new ebook
+                    addMovie();// Add a new  Movie
                     break;
                 case 2:
-                    modifyEbook();// Modify an existing ebook
+                    modifyMovie();// Modify an existing  Movie
                     break;
                 case 3:
-                    deleteEbook();// Delete an ebook
+                    deleteMovie();// Delete an  Movie
                     break;
                 case 4:
                     DigitalresourcePresentation.showMenu();
                     break;
                 case 5:
-                    //listEbook();// List all ebooks (not implemented)
+                    //listMovie();// List all  Movies (not implemented)
                     break;
                 case 6:
                     printColor("Exiting...","red");// Exit the program
@@ -67,35 +62,35 @@ public class EbookPresentation {
 
         // Header
         printColor("Welcome to the Library System ", "cyan");
-        printColor("EBOOK", "yellow");
+        printColor(" MOVIE", "yellow");
         printColor("----------------------------------", "cyan");
-        printColor("|        Ebook Management         |", "blue");
+        printColor("|        Movie Management         |", "blue");
         printColor("----------------------------------", "cyan");
         printColor("|           Options:              |", "blue");
-        printColor("|    1. Add Ebook                 |", "blue");
-        printColor("|    2. Modify Ebook              |", "blue");
-        printColor("|    3. Delete Ebook              |", "blue");
+        printColor("|    1. Add  Movie                |", "blue");
+        printColor("|    2. Modify  Movie             |", "blue");
+        printColor("|    3. Delete  Movie             |", "blue");
         printColor("|    4. Menu Digital Resource     |", "blue");
         printColor("|    6. Exit                      |", "blue");
         printColor("----------------------------------", "cyan");
         printColor("Select an option: ","white");
     }
 
-    // Method to add a new ebook
-    public static void addEbook() {
-        Ebook ebook = readEbookDetails();// Read ebook details from ebook
-        if (ebook != null) {
-            saveEbook(ebook);// Save the ebook if details are valid
+    // Method to add a new Movie
+    public static void addMovie() {
+        Movie movie = readMovieDetails();// Read ebook details from ebook
+        if (movie != null) {
+            saveMovie(movie);// Save the ebook if details are valid
         }
     }
 
-    public static Ebook readEbookDetails() {
-        System.out.println("Enter Ebook Information:");
+    public static Movie readMovieDetails() {
+        System.out.println("Enter Movie Information:");
         String isbn = null; //ISBN is not used in this example because we only generate idDigitalResource.
         String idDigitalResource;
         do {
             idDigitalResource = generateUniqueID(8);// Generate a unique ID
-        } while (isEbookIdTaken(idDigitalResource));// Ensure the ID is not already taken
+        } while (isMovieIdTaken(idDigitalResource));// Ensure the ID is not already taken
 
         System.out.println("Generated ISBN: " + idDigitalResource);
 
@@ -109,22 +104,23 @@ public class EbookPresentation {
         String publicationDate = scanner.nextLine();
 
 
-        return new Ebook(idDigitalResource, isbn, title, author, publicationDate);
+        return new Movie(idDigitalResource, isbn, title, author, publicationDate);
 
     }
 
-    // Method to save an ebook
-    public static void saveEbook(Ebook ebook) {
-        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
-        ebookRepository.save(ebook);
+    // Method to save an Movie
+    public static void saveMovie(Movie movie) {
+        MovieDataRepository movieDataRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        movieDataRepository.save(movie);
         System.out.println("Ebook saved successfully.");
     }
 
     // Method to generate a unique ID
     public static String generateUniqueID(int length) {
         StringBuilder sb = new StringBuilder(length);
-        // Always start with 'e'
-        sb.append('e');
+
+        // Always start with 'm'
+        sb.append('m');
 
         // Now generate the remaining characters randomly
         for (int i = 1; i < length; i++) {
@@ -137,50 +133,50 @@ public class EbookPresentation {
     }
 
     // Method to check if an ebook ID is already taken
-    public static boolean isEbookIdTaken(String idDigitalResource) {
-        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
-        Ebook existingebook = ebookRepository.findById(idDigitalResource);
-        return existingebook != null;
+    public static boolean isMovieIdTaken(String idDigitalResource) {
+        MovieDataRepository movieDataRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        Movie existingmovie = movieDataRepository.findById(idDigitalResource);
+        return existingmovie != null;
     }
 
     // Method to delete an ebook
-    public static void deleteEbook() {
-        System.out.print("Enter Ebook ID to delete: ");
-        String idEbook = scanner.nextLine();
-        if (!idEbook.isEmpty()) {
-            deleteEbookById(idEbook);// Delete the ebook if the ID is valid
+    public static void deleteMovie() {
+        System.out.print("Enter Movie ID to delete: ");
+        String idMovie = scanner.nextLine();
+        if (!idMovie.isEmpty()) {
+            deleteMovieById(idMovie);// Delete the Movie if the ID is valid
         } else {
-            printColor("Invalid Ebook ID.", "red");// Handle invalid ID input
+            printColor("Invalid Movie ID.", "red");// Handle invalid ID input
         }
     }
 
-    // Method to delete an ebook by ID
-    public static void deleteEbookById(String idEbook) {
-        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
-        ebookRepository.delete(idEbook);// Delete the ebook from the repository
-        System.out.println("Ebook deleted successfully.");
+    // Method to delete an Movie by ID
+    public static void deleteMovieById(String idMovie) {
+        MovieDataRepository movieRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        movieRepository.delete(idMovie);// Delete the Movie from the repository
+        System.out.println(" Movie deleted successfully.");
     }
 
-    // Method to modify an ebook
-    public static void modifyEbook() {
-        Ebook ebook = readModyEbookDetails();
-        if (ebook != null) {// Read new ebook details from user
-            modifyEbook(ebook);// Modify the ebook if details are valid
+    // Method to modify a Movie
+    public static void modifyMovie() {
+        Movie movie = readModyMovieDetails();
+        if (movie != null) {// Read new Movie details from user
+            modifyMovie(movie);// Modify the Movie if details are valid
         }
     }
 
-    // Method to read modified ebook details from user
-    private static Ebook readModyEbookDetails() {
+    // Method to read modified Movie details from user
+    private static Movie readModyMovieDetails() {
         System.out.println("Enter Ebook Information:");
         String isbn = null;// ISBN is not used in this example
         String idDigitalResource;
         do {
             System.out.println("Enter ID:");
             idDigitalResource = scanner.nextLine();
-            if (doesEbookIdTaken(idDigitalResource)) {
+            if (doesMovieIdTaken(idDigitalResource)) {
                 printColor("Identification does not exist. Please enter a different ID.", "red");
             }
-        } while (doesEbookIdTaken(idDigitalResource));// Ensure the ID exists
+        } while (doesMovieIdTaken(idDigitalResource));// Ensure the ID exists
 
         System.out.println("Generated ISBN: " + idDigitalResource);
 
@@ -194,22 +190,22 @@ public class EbookPresentation {
         String publicationDate = scanner.nextLine();
 
 
-        return new Ebook(idDigitalResource, isbn, title, author, publicationDate);
+        return new Movie(idDigitalResource, isbn, title, author, publicationDate);
 
 
     }
 
     // Method to check if an ebook ID does not exist (for modification)
-    public static boolean doesEbookIdTaken(String isbn) {
-        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
-        Ebook existingUser = ebookRepository.findById(isbn);
-        return existingUser == null;// Return true if the ID does not exist
+    public static boolean doesMovieIdTaken(String isbn) {
+        MovieDataRepository movieDataRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        Movie existingMovie = movieDataRepository.findById(isbn);
+        return existingMovie == null;// Return true if the ID does not exist
     }
 
     // Method to modify an ebook in the repository
-    private static void modifyEbook(Ebook ebook) {
-        EbookDataRepository ebookRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
-        ebookRepository.modify(ebook);// Modify the ebook in the repository
+    private static void modifyMovie(Movie movie) {
+        MovieDataRepository movieDataRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        movieDataRepository.modify(movie);// Modify the movie in the repository
     }
 
     // Method to printColor

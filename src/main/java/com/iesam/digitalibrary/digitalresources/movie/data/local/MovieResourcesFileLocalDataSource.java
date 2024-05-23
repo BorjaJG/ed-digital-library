@@ -1,10 +1,10 @@
-package com.iesam.digitalibrary.digitalresources.ebook.data.local;
+package com.iesam.digitalibrary.digitalresources.movie.data.local;
 
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
-
+import com.iesam.digitalibrary.digitalresources.movie.domain.domain.Movie;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDataSource {
+public class MovieResourcesFileLocalDataSource implements MovieResourcesLocalDataSource {
     private final String folderName = "dataStore";
     private final String fileName = "DigitalResource.txt";
     private final String filePath = folderName + File.separator + fileName;
@@ -29,22 +29,22 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
 
     // Save an ebook to the file
     @Override
-    public void save(Ebook ebook) {
-        List<Ebook> ebooks = findAll();
-        ebooks.add(ebook);
-        saveToFile(ebooks);
+    public void save(Movie movie) {
+        List<Movie> movies = findAll();
+        movies.add(movie);
+        saveToFile(movies);
     }
 
     // Save a list of ebooks to the file
-    public void saveList(List<Ebook> ebooks) {
-        saveToFile(ebooks);
+    public void saveList(List<Movie> movies) {
+        saveToFile(movies);
     }
 
     // Helper method to save the list of ebooks to the file
-    private void saveToFile(List<Ebook> ebooks) {
+    private void saveToFile(List<Movie> movies) {
         try {
             FileWriter myWriter = new FileWriter(filePath);
-            myWriter.write(gson.toJson(ebooks));
+            myWriter.write(gson.toJson(movies));
             myWriter.close();
             System.out.println("Datos guardados correctamente");
         } catch (IOException e) {
@@ -55,9 +55,9 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
 
     // Find an ebook by its ID (ISBN in this case)
     @Override
-    public Ebook findById(String id) {
-        List<Ebook> ebooks = findAll();
-        for (Ebook model : ebooks) {
+    public Movie findById(String id) {
+        List<Movie> movies = findAll();
+        for (Movie model : movies) {
             if (Objects.equals(model.idDigitalResource, id)) {
                 return model;
             }
@@ -66,7 +66,7 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
     }
 
     // Find all ebooks in the file
-    public ArrayList<Ebook> findAll() {
+    public ArrayList<Movie> findAll() {
         try {
             File myObj = new File(filePath);
             if (!myObj.exists()) {
@@ -92,9 +92,9 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
     // Delete an ebook by its ID (ISBN in this case)
     @Override
     public void delete(String isbn) {
-        List<Ebook> newList = new ArrayList<>();
-        List<Ebook> models = findAll();
-        for (Ebook model : models) {
+        List<Movie> newList = new ArrayList<>();
+        List<Movie> models = findAll();
+        for (Movie model : models) {
             if (!model.isbn.equals(isbn)) {
                 newList.add(model);
             }
@@ -104,9 +104,9 @@ public class EbookResourcesFileLocalDataSource implements EbookResourcesLocalDat
 
     // Modify an existing ebook in the file
     @Override
-    public void modify(Ebook ebook) {
-        delete(ebook.isbn);
-        save(ebook);
+    public void modify(Movie movie) {
+        delete(movie.isbn);
+        save(movie);
     }
 
 }

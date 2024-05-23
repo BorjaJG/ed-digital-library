@@ -19,8 +19,10 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
 
 
     private final String folderName = "dataStore";
-    private final String fileName = "Ebook.txt";
-    private final String filePath = folderName + File.separator + fileName;
+    private final String digitalResourceFileName = "DigitalResource.txt";
+
+    private final String digitalResourceFilePath = folderName + File.separator + digitalResourceFileName;
+
 
     // Gson object for JSON serialization/deserialization
     private Gson gson = new Gson();
@@ -50,7 +52,7 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
     private void saveToFile(List<DigitalResource> digitalResources) {
         try {
             // Write the list of digital resources to the file
-            FileWriter myWriter = new FileWriter(filePath);
+            FileWriter myWriter = new FileWriter(digitalResourceFilePath);
             myWriter.write(gson.toJson(digitalResources));
             myWriter.close();
             System.out.println("Data saved successfully");
@@ -65,7 +67,7 @@ public class DigitalResourcesFileLocalDataSource implements DigitalResourcesLoca
     public ArrayList<DigitalResource> findAll() {
         try {
             // Open the file to read data
-            File myObj = new File(filePath);
+            File myObj = new File(digitalResourceFilePath);
             if (!myObj.exists()) {
                 // Create the file if it doesn't exist
                 myObj.createNewFile();

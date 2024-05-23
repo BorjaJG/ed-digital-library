@@ -1,0 +1,1 @@
+[{"publicationDate":"1","isbn":"1","idDigitalResource":"mK5KYIVB"},{"author":"1","publicationDate":"2","isbn":"1","idDigitalResource":"e9DXPAAX"}]
