@@ -43,25 +43,25 @@ class ListUsersUseCaseTest {
         User user2 = new User("2", "Jane Doe", "jane.doe@example.com", "amigo@amigo", "617929803", "1", "1",
                 "1", "1", "1", "1", "1", "1", "1");
         ArrayList<User> users = new ArrayList<>(Arrays.asList(user1, user2));
-        Mockito.when(userRepository.lits()).thenReturn(users);
+        Mockito.when(userRepository.list()).thenReturn(users);
 
         // When
         ArrayList<User> result = listUsersUseCase.execute();
 
         // Then
-        Mockito.verify(userRepository, Mockito.times(1)).lits();
+        Mockito.verify(userRepository, Mockito.times(1)).list();
         assertEquals(users, result);
     }
     @Test
     public void givenNoUsersExist_whenListUsers_thenReturnEmptyList() {
         // Given
-        Mockito.when(userRepository.lits()).thenReturn(new ArrayList<>());
+        Mockito.when(userRepository.list()).thenReturn(new ArrayList<>());
 
         // When
         List<User> result = listUsersUseCase.execute();
 
         // Then
-        Mockito.verify(userRepository, Mockito.times(1)).lits();
+        Mockito.verify(userRepository, Mockito.times(1)).list();
         assertTrue(result.isEmpty());
     }
 }

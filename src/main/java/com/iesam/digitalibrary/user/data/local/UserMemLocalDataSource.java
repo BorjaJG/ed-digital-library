@@ -17,7 +17,7 @@ public class UserMemLocalDataSource {
     private static UserMemLocalDataSource instance = null;
 
     // Private constructor to enforce singleton pattern
-    private UserMemLocalDataSource() {
+    public UserMemLocalDataSource() {
     }
 
     // Method to create a new instance of UserMemLocalDataSource (singleton pattern)

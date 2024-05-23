@@ -38,7 +38,7 @@ class GetEbookUseCaseTest {
         String isbn = "1";
 
         // When
-        getEbookUseCase.execte(isbn);
+        getEbookUseCase.execute(isbn);
 
         // Then
         Mockito.verify(ebookRepository, Mockito.times(1)).obtain(isbn);

@@ -1,6 +1,6 @@
 package com.iesam.digitalibrary.user.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface UserRepository {
     // Method to save a user
@@ -16,5 +16,5 @@ public interface UserRepository {
     void modify(User user);
 
     // Method to list all users
-    ArrayList<User> list();
+    List<User> list();
 }

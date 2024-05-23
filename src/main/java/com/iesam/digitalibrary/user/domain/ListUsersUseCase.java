@@ -14,6 +14,6 @@ public class ListUsersUseCase {
 
     // Method to execute listing all users
     ArrayList<User> execute(){
-        return userRepository.list(); // Call list method of UserRepository to get all users
+        return (ArrayList<User>) userRepository.list(); // Call list method of UserRepository to get all users
     }
 }

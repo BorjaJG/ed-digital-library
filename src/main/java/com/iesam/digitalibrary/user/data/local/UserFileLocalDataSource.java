@@ -60,7 +60,7 @@ public class UserFileLocalDataSource implements UserLocalDataSource {
     }
 
     // Find all users from the file
-    public ArrayList<User> findAll() {
+    public List<User> findAll() {
         try {
             File file = new File(filePath);
             if (!file.exists()) {

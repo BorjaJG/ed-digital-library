@@ -9,4 +9,5 @@ public interface DigitalResourceRepository {
     // Method to list all digital resources
     ArrayList<DigitalResource> list();
 
+    void ObtainDR(String isbn);
 }

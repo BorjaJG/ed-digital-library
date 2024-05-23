@@ -3,7 +3,7 @@ package com.iesam.digitalibrary.user.data.local;
 
 import com.iesam.digitalibrary.user.domain.User;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface UserLocalDataSource {
 
@@ -21,5 +21,5 @@ public interface UserLocalDataSource {
     void modify(User user);
 
     // Find all users
-    ArrayList<User> findAll();
+    List<User> findAll();
 }

@@ -4,10 +4,12 @@ package com.iesam.digitalibrary.user.presentation;
 import com.iesam.Main;
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
+import com.iesam.digitalibrary.user.data.local.UserMemLocalDataSource;
 import com.iesam.digitalibrary.user.domain.User;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -126,7 +128,7 @@ public class UserPresentation {
 
     // Method to save a user
     public static void saveUser(User user) {
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
         userRepository.save(user);
         System.out.println("User saved successfully.");
     }
@@ -147,13 +149,13 @@ public class UserPresentation {
 
     // Method to get a user by ID
     public static User getUserById(String userId) {
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
         return userRepository.obtain(userId);
     }
 
     // Method to check if a user ID is already taken
     public static boolean isUserIdTaken(String userId) {
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
         User existingUser = userRepository.obtain(userId);
         return existingUser != null;
     }
@@ -210,7 +212,7 @@ public class UserPresentation {
 
     // Method to delete a user by ID
     public static void deleteUserById(String userId) {
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
         userRepository.delete(userId);
         System.out.println("User deleted successfully.");
     }
@@ -285,22 +287,22 @@ public class UserPresentation {
 
     // Method to check if a user ID exists
     public static boolean doesUserIdTaken(String userId) {
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
         User existingUser = userRepository.obtain(userId);
         return existingUser == null;
     }
 
     // Method to update a user
     private static void modifyUser(User user) {
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
         userRepository.modify(user);
     }
 
     // Method to list all users
     private static void listUser() {
         System.out.println("List of Users:");
-        UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
-        ArrayList<User> users = userRepository.list();
+        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
+        List<User> users = userRepository.list();
         for (User user : users) {
             System.out.println(user.toString());
         }

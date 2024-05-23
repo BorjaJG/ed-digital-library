@@ -56,25 +56,25 @@ class ListLoanUseCaseTest {
         Loan loan1 = new Loan("1",digitalResource1, user1, startDate1, endDate1, null);
         Loan loan2 = new Loan("2",digitalResource2, user2, startDate2, endDate2, null);
         ArrayList<Loan> loans = new ArrayList<>(Arrays.asList(loan1, loan2));
-        Mockito.when(loanRepository.lits()).thenReturn(loans);
+        Mockito.when(loanRepository.list()).thenReturn(loans);
 
         // When
-        ArrayList<Loan> result = loanRepository.lits();
+        ArrayList<Loan> result = loanRepository.list();
 
         // Then
-        Mockito.verify(loanRepository, Mockito.times(1)).lits();
+        Mockito.verify(loanRepository, Mockito.times(1)).list();
         assertEquals(loans, result);
     }
     @Test
     public void givenNoLoansExist_whenListLoans_thenReturnEmptyList() {
         // Given
-        Mockito.when(loanRepository.lits()).thenReturn(new ArrayList<>());
+        Mockito.when(loanRepository.list()).thenReturn(new ArrayList<>());
 
         // When
-        List<Loan> result = loanRepository.lits();
+        List<Loan> result = loanRepository.list();
 
         // Then
-        Mockito.verify(loanRepository, Mockito.times(1)).lits();
+        Mockito.verify(loanRepository, Mockito.times(1)).list();
         assertTrue(result.isEmpty());
     }
 }

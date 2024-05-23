@@ -44,25 +44,25 @@ class ListDigitalResourceUseCaseTest {
         DigitalResource digitalResource2 = new DigitalResource("2");
         // Given
         ArrayList<DigitalResource> digitalResources = new ArrayList<>(Arrays.asList(digitalResource1, digitalResource2));
-        Mockito.when(digitalResourceRepository.lits()).thenReturn(digitalResources);
+        Mockito.when(digitalResourceRepository.list()).thenReturn(digitalResources);
 
         // When
-        ArrayList<DigitalResource> result = digitalResourceRepository.lits();
+        ArrayList<DigitalResource> result = digitalResourceRepository.list();
 
         // Then
-        Mockito.verify(digitalResourceRepository, Mockito.times(1)).lits();
+        Mockito.verify(digitalResourceRepository, Mockito.times(1)).list();
         assertEquals(digitalResources, result);
     }
     @Test
     public void givenNoDGsExist_whenListDR_thenReturnEmptyList() {
         // Given
-        Mockito.when(digitalResourceRepository.lits()).thenReturn(new ArrayList<>());
+        Mockito.when(digitalResourceRepository.list()).thenReturn(new ArrayList<>());
 
         // When
         ArrayList<DigitalResource> result = ListDigitalResourceUseCase.execute();
 
         // Then
-        Mockito.verify(digitalResourceRepository, Mockito.times(1)).lits();
+        Mockito.verify(digitalResourceRepository, Mockito.times(1)).list();
         assertTrue(result.isEmpty());
     }
 
