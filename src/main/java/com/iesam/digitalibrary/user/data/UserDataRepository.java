@@ -16,6 +16,7 @@ public class UserDataRepository implements UserRepository {
     private UserMemLocalDataSource memLocalDataSource;
     private UserFileLocalDataSource fileLocalDataSource;
 
+    // Constructor to initialize with both memory and file local data sources
     public UserDataRepository(UserMemLocalDataSource memLocalDataSource, UserFileLocalDataSource fileLocalDataSource) {
         this.memLocalDataSource = memLocalDataSource;
         this.fileLocalDataSource = fileLocalDataSource;
@@ -23,59 +24,56 @@ public class UserDataRepository implements UserRepository {
 
     private UserLocalDataSource userLocalDataSource;
 
-    // Constructor to initialize with a UserLocalDataSource
+    // Constructor to initialize with only one local data source
     public UserDataRepository(UserLocalDataSource userLocalDataSource) {
         this.userLocalDataSource = userLocalDataSource;
     }
 
-    // Save a user using the UserLocalDataSource
+    // Save a user using the appropriate local data source
     @Override
     public void save(User user) {
         userLocalDataSource.save(user);
     }
 
-    // Obtain a user by userID using the UserLocalDataSource
+    // Obtain a user by userID from the appropriate local data source
     @Override
     public User obtain(String userID) {
-        User userMem=memLocalDataSource.findById(userID);
+        User userMem = memLocalDataSource.findById(userID);
 
-        if(userMem!=null){
+        if (userMem != null) {
+            return userMem; // If found in memory, return
+        } else {
+            userMem = fileLocalDataSource.findById(userID); // If not in memory, try finding in file
+            memLocalDataSource.findById(userID); // Not sure why this line exists
             return userMem;
         }
-        else {
-            userMem=fileLocalDataSource.findById(userID);
-            memLocalDataSource.findById(userID);
-            return userMem;
-        }
-
     }
 
-    // Delete a user by userID using the UserLocalDataSource
+    // Delete a user by userID using the appropriate local data source
     @Override
     public void delete(String userID) {
         userLocalDataSource.delete(userID);
     }
 
-    // Modify a user using the UserLocalDataSource
+    // Modify a user using the appropriate local data source
     @Override
     public void modify(User user) {
         userLocalDataSource.modify(user);
     }
 
-    // List all users using the UserLocalDataSource
+    // List all users using the appropriate local data source
     @Override
     public List<User> list() {
-        List<User> usersMem=memLocalDataSource.findAll();
-        if(!usersMem.isEmpty()){
-            return usersMem;
-        }else {
-            usersMem=fileLocalDataSource.findAll();
+        List<User> usersMem = memLocalDataSource.findAll();
+        if (!usersMem.isEmpty()) {
+            return usersMem; // If memory has users, return them
+        } else {
+            usersMem = fileLocalDataSource.findAll(); // If memory is empty, get users from file
             for (User user : usersMem) {
-                memLocalDataSource.save(user);
+                memLocalDataSource.save(user); // Save users to memory for future use
             }
             return usersMem;
         }
-
     }
 }
 
