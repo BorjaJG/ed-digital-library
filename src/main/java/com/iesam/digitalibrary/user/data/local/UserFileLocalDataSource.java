@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class UserFileLocalDataSource implements UserLocalDataSource {
-    private final String folderName = "dataStore";
+    private final String folderName = "filestore";
     private final String fileName = "User.txt";
     private final String filePath = folderName + File.separator + fileName;
     private Gson gson = new Gson();

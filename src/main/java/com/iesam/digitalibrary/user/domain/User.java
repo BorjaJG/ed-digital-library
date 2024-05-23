@@ -59,4 +59,8 @@ public class User {
                 ", additionalData='" + additionalData + '\'' +
                 '}';
     }
+
+
+
+
 }

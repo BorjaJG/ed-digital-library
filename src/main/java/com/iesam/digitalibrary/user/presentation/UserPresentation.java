@@ -5,24 +5,21 @@ import com.iesam.Main;
 import com.iesam.digitalibrary.user.data.UserDataRepository;
 import com.iesam.digitalibrary.user.data.local.UserFileLocalDataSource;
 import com.iesam.digitalibrary.user.data.local.UserMemLocalDataSource;
+import com.iesam.digitalibrary.user.domain.NewUserUseCase;
 import com.iesam.digitalibrary.user.domain.User;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class UserPresentation {
+import static com.iesam.digitalibrary.digitalresources.ebook.presentation.EbookPresentation.generateUniqueID;
+import static com.iesam.digitalibrary.user.domain.NewUserUseCase.generarCorreoElectronicoUser;
+import static com.iesam.digitalibrary.user.domain.NewUserUseCase.generateUniqueIdUser;
 
-    //
+public class UserPresentation {
 
     // Static scanner for reading user input
     private static Scanner scanner = new Scanner(System.in);
-
-    // Set of characters for generating unique IDs
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXY0123456789";
-    private static final Random RANDOM = new Random();
 
     public static void main(String[] args) {
         showMenu();// Display the user menu
@@ -78,12 +75,8 @@ public class UserPresentation {
     public static User readUserDetails() {
         System.out.println("Enter User Information:");
 
-        // Generate a unique user ID
-        String userId;
-        do {
-            userId = generateUniqueID(8);
-        } while (isUserIdTaken(userId));
-        System.out.println("Generated User ID: " + userId);
+        String userId = generateUniqueIdUser(9);
+        System.out.print("UserId: " + userId);
 
         System.out.print("Name: ");
         String name = scanner.nextLine();
@@ -91,8 +84,8 @@ public class UserPresentation {
         System.out.print("Role ID: ");
         String roleId = scanner.nextLine();
 
-        String email = generarCorreoElectronico(name, userId);
-        System.out.println("Email: " + email);
+        String email = generarCorreoElectronicoUser(userId, name);
+        System.out.print("email: " + email);
 
         System.out.print("Phone Number: ");
         String phoneNumber = scanner.nextLine();
@@ -124,14 +117,15 @@ public class UserPresentation {
         System.out.print("Additional Data: ");
         String additionalData = scanner.nextLine();
 
-        return new User(userId, name, email, phoneNumber, address, registrationDate, userType, status,
+        User user = new User(userId, name, email, phoneNumber, address, registrationDate, userType, status,
                 history, fines, transactions, notificationPreference, roleId, additionalData);
+        return user;
     }
 
     // Method to save a user
     public static void saveUser(User user) {
-        UserDataRepository userRepository = new UserDataRepository(new UserMemLocalDataSource(), new UserFileLocalDataSource());
-        userRepository.save(user);
+        NewUserUseCase newUserUseCase = new NewUserUseCase(new UserDataRepository( new UserFileLocalDataSource()));
+        newUserUseCase.execute(user);
         System.out.println("User saved successfully.");
     }
 
@@ -181,25 +175,6 @@ public class UserPresentation {
         System.out.print("Select an option: ");
     }
 
-    // Method to generate a unique ID of a given length
-    public static String generateUniqueID(int length) {
-        StringBuilder sb = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++) {
-            int randomIndex = RANDOM.nextInt(CHARACTERS.length());
-            char randomChar = CHARACTERS.charAt(randomIndex);
-            sb.append(randomChar);
-        }
-
-        return sb.toString();
-    }
-
-    // Method to generate an email address based on name and ID
-    public static String generarCorreoElectronico(String nombre, String id) {
-        // Format the email address: nombre + id + "@biblio.com"
-        String correo = nombre + id + "@biblio.com";
-        return correo;
-    }
 
     // Method to delete a user by ID
     public static void deleteUser() {
@@ -248,9 +223,9 @@ public class UserPresentation {
 
         System.out.print("Role ID: ");
         String roleId = scanner.nextLine();
-
-        String email = generarCorreoElectronico(name, userId);
-        System.out.println("Email: " + email);
+        String email = null;
+        //String email = generarCorreoElectronico(name, userId);
+        //System.out.println("Email: " + email);
 
         System.out.print("Phone Number: ");
         String phoneNumber = scanner.nextLine();
