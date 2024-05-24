@@ -1,6 +1,7 @@
 package com.iesam.digitalibrary.user.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListUsersUseCase {
 
@@ -13,7 +14,7 @@ public class ListUsersUseCase {
     }
 
     // Method to execute listing all users
-    ArrayList<User> execute(){
-        return (ArrayList<User>) userRepository.list(); // Call list method of UserRepository to get all users
+    public List<User> execute() {
+        return  userRepository.list(); // Call list method of UserRepository to get all users
     }
 }
