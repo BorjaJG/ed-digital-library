@@ -8,17 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class UserMemLocalDataSource {
+public class UserMemLocalDataSource implements UserLocalDataSource{
 
     // Data store to hold users
-    private Map<String, User> dataStore = new TreeMap<>();
+     Map<String, User> dataStore = new TreeMap<>();
 
     // Singleton instance
     private static UserMemLocalDataSource instance = null;
 
-    // Private constructor to enforce singleton pattern
-    public UserMemLocalDataSource() {
-    }
 
     // Method to create a new instance of UserMemLocalDataSource (singleton pattern)
     public static UserMemLocalDataSource newInstance() {
@@ -53,5 +50,11 @@ public class UserMemLocalDataSource {
     // Delete a user by ID
     public void delete(String userId) {
         dataStore.remove(userId);
+    }
+
+    @Override
+    public void modify(User user) {
+        delete(user.userID);
+        save(user);
     }
 }

@@ -11,8 +11,8 @@ public class GetUserUseCase {
     }
 
     // Method to execute obtaining a user by ID
-    User execute(String userID) {
-        return this.userRepository.obtain(userID); // Call obtain method of UserRepository to get user by ID
+    public User execute(String userID) {
+        return userRepository.obtain(userID); // Call obtain method of UserRepository to get user by ID
     }
 
 }

@@ -16,57 +16,53 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class UserFileLocalDataSource implements UserLocalDataSource {
-    private final String folderName = "dataStore";
+    private final String folderName = "filestore";
     private final String fileName = "User.txt";
     private final String filePath = folderName + File.separator + fileName;
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
     private final Type typeList = new TypeToken<ArrayList<User>>() {
     }.getType();
-
-    // Save a user to the file
-    public void save(User user) {
-        List<User> users = findAll();
-        users.add(user);
-        saveToFile(users);
+    public void save(User model) {
+        List<User> models = findAll();
+        models.add(model);
+        saveToFile(models);
     }
 
-    // Save a list of users to the file
-    public void saveList(List<User> users) {
-        saveToFile(users);
-    }
-
-    // Internal method to save data to the file
-    private void saveToFile(List<User> users) {
-        try {
-            FileWriter myWriter = new FileWriter(filePath);
-            myWriter.write(gson.toJson(users));
-            myWriter.close();
-            System.out.println("Data saved successfully");
-        } catch (IOException e) {
-            System.out.println("An error occurred while saving the data.");
-            e.printStackTrace();
-        }
-    }
-
-    // Find a user by ID
-    public User findById(String id) {
-        List<User> users = findAll();
-        for (User user : users) {
-            if (Objects.equals(user.userID, id)) {
-                return user;
+    @Override
+    public User findById(String code) {
+        List<User> models = findAll();
+        for (User model : models) {
+            if (Objects.equals(model.userID, code)) {
+                return model;
             }
         }
         return null;
     }
 
-    // Find all users from the file
+    public void saveList(List<User> models) {
+        saveToFile(models);
+    }
+
+    private void saveToFile(List<User> models) {
+        try {
+            FileWriter myWriter = new FileWriter(filePath);
+            myWriter.write(gson.toJson(models));
+            myWriter.close();
+            System.out.println("Datos guardados correctamente");
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error al guardar la información.");
+            e.printStackTrace();
+        }
+    }
+
+
     public List<User> findAll() {
         try {
-            File file = new File(filePath);
-            if (!file.exists()) {
-                file.createNewFile();
+            File myObj = new File(filePath);
+            if (!myObj.exists()) {
+                myObj.createNewFile();
             }
-            Scanner myReader = new Scanner(file);
+            Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 myReader.close();
@@ -74,31 +70,30 @@ public class UserFileLocalDataSource implements UserLocalDataSource {
             }
             myReader.close();
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred while retrieving the list.");
+            System.out.println("Ha ocurrido un error al obtener el listado.");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("An error occurred while creating the file.");
+            System.out.println("Ha ocurrido un error al crear el fichero.");
             throw new RuntimeException(e);
         }
         return new ArrayList<>();
     }
 
-    // Delete a user by ID
-    public void delete(String userId) {
+    public void delete(String modelCode) {
         List<User> newList = new ArrayList<>();
-        List<User> users = findAll();
-        for (User user : users) {
-            if (!user.userID.equals(userId)) {
-                newList.add(user);
+        List<User> models = findAll();
+        for (User model : models) {
+            if (!model.userID.equals(modelCode)) {
+                newList.add(model);
             }
         }
         saveList(newList);
     }
 
-    // Modify a user
+    @Override
     public void modify(User user) {
-        delete(user.userID); // Delete the user with the given ID
-        save(user); // Save the modified user
+        delete(user.userID);
+        save(user);
     }
 
 

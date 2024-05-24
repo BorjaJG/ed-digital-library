@@ -114,13 +114,13 @@ public class LoanPresentation {
             }
         }
 
-        while (user == null) {
-            System.out.print("User: ");
-            user = UserPresentation.searchUser();
-            if (user == null) {
-                System.out.println("User not found. Please try again.");
-            }
-        }
+//        while (user == null) {
+//            System.out.print("User: ");
+//            user = UserPresentation.searchUser();
+//            if (user == null) {
+//                System.out.println("User not found. Please try again.");
+//            }
+//        }
 
         return new Loan(idLoan, digitalResource, user, startDate, endDate, returnDate);
     }
