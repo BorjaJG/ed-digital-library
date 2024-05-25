@@ -18,12 +18,12 @@ public class EbookDataRepository implements DigitalResourceRepository<Ebook> {
 
     @Override
     public Ebook obtainDigitalResource(String idDigitalResource) {
-        return null;
+        return ebookResourcesLocalDataSource.findById(idDigitalResource);
     }
 
     @Override
     public List<Ebook> list() {
-        return null;
+        return ebookResourcesLocalDataSource.findAll();
     }
 
 

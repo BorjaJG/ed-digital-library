@@ -1,8 +1,19 @@
 package com.iesam.digitalibrary.digitalresources.movie.presentation;
 
 
+import com.iesam.Main;
+import com.iesam.digitalibrary.digitalresources.domain.DigitalResourceRepository;
+import com.iesam.digitalibrary.digitalresources.domain.GetDigitalResourceUseCase;
+import com.iesam.digitalibrary.digitalresources.domain.ListDigitalResourceUseCase;
+import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
+import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
+import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
+import com.iesam.digitalibrary.digitalresources.movie.data.MovieDataRepository;
+import com.iesam.digitalibrary.digitalresources.movie.data.local.MovieResourcesFileLocalDataSource;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
 import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -36,7 +47,7 @@ public class MoviePresentation {
                     obtainMovieId();
                     break;
                 case 3:
-                    //DigitalresourcePresentation.showMenu();;
+                    DigitalresourcePresentation.showMenu();;
                     break;
                 case 4:
                     printColor("Exiting...", "red");// Exit the program
@@ -47,11 +58,21 @@ public class MoviePresentation {
         }
     }
 
-    private static void listMovies() {
+    private static void obtainMovieId() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Dame el código de la música a mostrar");
+        String idDigitalResource = sc.nextLine();
+        DigitalResourceRepository digitalResourceRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        GetDigitalResourceUseCase getDigitalResourceUseCase = new GetDigitalResourceUseCase(digitalResourceRepository);
+        Movie movie = (Movie) getDigitalResourceUseCase.execute(idDigitalResource);
+        System.out.println(movie);
     }
 
-    private static void obtainMovieId() {
-
+    private static void listMovies() {
+        DigitalResourceRepository digitalResourceRepository =new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        ListDigitalResourceUseCase listDigitalResourceUseCase = new ListDigitalResourceUseCase(digitalResourceRepository);
+        List<Movie> movies =  (List<Movie>) (List<?>) listDigitalResourceUseCase.execute();
+        System.out.println(movies);
     }
 
     // Method to printColor

@@ -280,7 +280,7 @@ public class DigitalresourcePresentation {
         DigitalResourceDataRepository digitalResourceDataRepository = new DigitalResourceDataRepository(new DigitalResourceResourcesFileLocalDataSource());
         GetDigitalResourceUseCase getDigitalResourceUseCase = new GetDigitalResourceUseCase(digitalResourceDataRepository);
         DigitalResource digitalResource = getDigitalResourceUseCase.execute(iddigitalResource);
-        System.out.println(digitalResource);
+        System.out.println(digitalResource.toString());
     }
 
 

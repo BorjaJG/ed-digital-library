@@ -15,12 +15,12 @@ public class MovieDataRepository implements DigitalResourceRepository<Movie> {
 
     @Override
     public Movie obtainDigitalResource(String idDigitalResource) {
-        return null;
+        return movieResourcesLocalDataSource.findById(idDigitalResource);
     }
 
     @Override
     public List<Movie> list() {
-        return null;
+        return  movieResourcesLocalDataSource.findAll();
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.iesam.digitalibrary.digitalresources.ebook.presentation;
 
-import com.iesam.digitalibrary.digitalresources.domain.DigitalResourceRepository;
-import com.iesam.digitalibrary.digitalresources.domain.NewDigitalResourceUseCase;
+import com.iesam.digitalibrary.digitalresources.domain.*;
 import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
 import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
+import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePresentation;
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -39,7 +40,7 @@ public class EbookPresentation {
                     obtainEbookId();
                     break;
                 case 3:
-                    //DigitalresourcePresentation.showMenu();;
+                    DigitalresourcePresentation.showMenu();;
                     break;
                 case 4:
                     printColor("Exiting...", "red");// Exit the program
@@ -51,9 +52,21 @@ public class EbookPresentation {
     }
 
     private static void obtainEbookId() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Dame el código de la música a mostrar");
+        String idDigitalResource = sc.nextLine();
+        DigitalResourceRepository digitalResourceRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        GetDigitalResourceUseCase getDigitalResourceUseCase = new GetDigitalResourceUseCase(digitalResourceRepository);
+        Ebook ebook = (Ebook) getDigitalResourceUseCase.execute(idDigitalResource);
+        System.out.println(ebook);
     }
 
     private static void listEbooks() {
+        DigitalResourceRepository digitalResourceRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        ListDigitalResourceUseCase listDigitalResourceUseCase = new ListDigitalResourceUseCase(digitalResourceRepository);
+        List<Ebook> ebooks =  (List<Ebook>) (List<?>) listDigitalResourceUseCase.execute();
+        System.out.println(ebooks);
+
     }
 
 

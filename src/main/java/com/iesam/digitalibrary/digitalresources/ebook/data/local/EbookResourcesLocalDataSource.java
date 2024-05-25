@@ -2,6 +2,9 @@ package com.iesam.digitalibrary.digitalresources.ebook.data.local;
 
 
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
+
+import java.util.List;
 
 
 public interface EbookResourcesLocalDataSource {
@@ -17,5 +20,6 @@ public interface EbookResourcesLocalDataSource {
 
     // Modify an existing ebook in the repository
     void modify(Ebook ebook);
+    List<Ebook> findAll();
 
 }
