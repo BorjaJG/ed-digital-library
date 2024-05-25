@@ -2,11 +2,14 @@ package com.iesam.digitalibrary.digitalresources.movie.data.local;
 
 
 
-import com.iesam.digitalibrary.digitalresources.movie.domain.domain.Movie;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
+
+import java.util.List;
 
 
 public interface MovieResourcesLocalDataSource {
 
+    List<Movie> findAll();
     // Save a new ebook to the repository
     void save(Movie movie);
 

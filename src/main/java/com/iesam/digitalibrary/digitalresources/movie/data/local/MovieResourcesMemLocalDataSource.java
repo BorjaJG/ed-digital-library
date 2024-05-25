@@ -1,8 +1,7 @@
 package com.iesam.digitalibrary.digitalresources.movie.data.local;
 
 
-import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
-import com.iesam.digitalibrary.digitalresources.movie.domain.domain.Movie;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

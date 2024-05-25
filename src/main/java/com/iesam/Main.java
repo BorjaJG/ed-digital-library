@@ -33,7 +33,7 @@ public class Main {
                     DigitalresourcePresentation.showMenu();
                     break;
                 case 2:
-                    LoanPresentation.showMenu();
+//                    LoanPresentation.showMenu();
                     break;
                 case 3:
                     UserPresentation.showMenu();

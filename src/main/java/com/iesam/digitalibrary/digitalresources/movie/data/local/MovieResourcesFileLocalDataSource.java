@@ -4,7 +4,7 @@ package com.iesam.digitalibrary.digitalresources.movie.data.local;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
-import com.iesam.digitalibrary.digitalresources.movie.domain.domain.Movie;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class MovieResourcesFileLocalDataSource implements MovieResourcesLocalDataSource {
-    private final String folderName = "dataStore";
+    private final String folderName = "filestore";
     private final String fileName = "DigitalResource.txt";
     private final String filePath = folderName + File.separator + fileName;
 
@@ -91,11 +91,11 @@ public class MovieResourcesFileLocalDataSource implements MovieResourcesLocalDat
 
     // Delete an ebook by its ID (ISBN in this case)
     @Override
-    public void delete(String isbn) {
+    public void delete(String modelCode) {
         List<Movie> newList = new ArrayList<>();
         List<Movie> models = findAll();
         for (Movie model : models) {
-            if (!model.isbn.equals(isbn)) {
+            if (!model.idDigitalResource.equals(modelCode)) {
                 newList.add(model);
             }
         }
@@ -105,7 +105,7 @@ public class MovieResourcesFileLocalDataSource implements MovieResourcesLocalDat
     // Modify an existing ebook in the file
     @Override
     public void modify(Movie movie) {
-        delete(movie.isbn);
+        delete(movie.idDigitalResource);
         save(movie);
     }
 

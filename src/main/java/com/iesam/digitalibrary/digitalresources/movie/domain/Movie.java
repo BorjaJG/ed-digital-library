@@ -1,4 +1,4 @@
-package com.iesam.digitalibrary.digitalresources.movie.domain.domain;
+package com.iesam.digitalibrary.digitalresources.movie.domain;
 
 import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
 
@@ -17,6 +17,22 @@ public class Movie extends DigitalResource {
         this.director = director;
         this.publicationDate = publicationDate;
         this.isbn = isbn;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public String getIsbn() {
+        return isbn;
     }
 
     // toString method to represent Movie object as a String

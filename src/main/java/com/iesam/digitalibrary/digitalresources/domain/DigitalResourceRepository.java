@@ -1,13 +1,18 @@
 package com.iesam.digitalibrary.digitalresources.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public interface DigitalResourceRepository {
+public interface DigitalResourceRepository<T extends DigitalResource> {
     // Method to obtain a digital resource by its ID
-    DigitalResource obtainDR(String idDigitalResource);
+    T obtainDigitalResource(String idDigitalResource);
 
     // Method to list all digital resources
-    ArrayList<DigitalResource> list();
+    List<T> list();
 
-    void ObtainDR(String isbn);
+    void modify(T digitalResource);
+
+    void delete(String idDigitalResource);
+
+    void save(T digitalResource);
 }
