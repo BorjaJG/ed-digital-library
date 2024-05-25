@@ -2,7 +2,7 @@ package com.iesam.digitalibrary.digitalresources.movie.data.local;
 
 
 
-import com.iesam.digitalibrary.digitalresources.movie.domain.domain.Movie;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
 
 
 public interface MovieResourcesLocalDataSource {

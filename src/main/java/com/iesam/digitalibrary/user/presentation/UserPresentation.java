@@ -89,10 +89,12 @@ public class UserPresentation {
     public static void listUser() {
         System.out.println("List of Users:");
         UserDataRepository userRepository = new UserDataRepository(new UserFileLocalDataSource());
-        List<User> users = userRepository.list();
+        ListUsersUseCase listUsersUseCase = new ListUsersUseCase(userRepository);
+        List<User> users = listUsersUseCase.execute();
         for (User user : users) {
-            System.out.println(user.toString());
+            System.out.println(user);
         }
+
     }
 
     // Method to search for a user by ID

@@ -19,6 +19,22 @@ public class Ebook extends DigitalResource {
         this.isbn = isbn;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
     // toString method to represent Ebook object as a String
     @Override
     public String toString() {

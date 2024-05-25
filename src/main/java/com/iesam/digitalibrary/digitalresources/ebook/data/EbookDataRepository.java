@@ -1,39 +1,47 @@
 package com.iesam.digitalibrary.digitalresources.ebook.data;
 
+import com.iesam.digitalibrary.digitalresources.domain.DigitalResourceRepository;
 import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesLocalDataSource;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
 
-public class EbookDataRepository implements EbookResourcesLocalDataSource {
+import java.util.List;
 
-    // Dependency on EbookResourcesLocalDataSource
-    private EbookResourcesLocalDataSource ebookResourcesLocalDataSource;
 
-    // Constructor to initialize with an EbookResourcesLocalDataSource
+public class EbookDataRepository implements DigitalResourceRepository<Ebook> {
+
+    public EbookResourcesLocalDataSource ebookResourcesLocalDataSource;
+
     public EbookDataRepository(EbookResourcesLocalDataSource ebookResourcesLocalDataSource) {
         this.ebookResourcesLocalDataSource = ebookResourcesLocalDataSource;
     }
 
-    // Save an ebook using EbookResourcesLocalDataSource
+
     @Override
-    public void save(Ebook ebook) {
-        ebookResourcesLocalDataSource.save(ebook);
+    public Ebook obtainDigitalResource(String idDigitalResource) {
+        return null;
     }
 
-    // Find an ebook by ID using EbookResourcesLocalDataSource
     @Override
-    public Ebook findById(String idDigitalResource) {
-        return ebookResourcesLocalDataSource.findById(idDigitalResource);
+    public List<Ebook> list() {
+        return null;
     }
 
-    // Delete an ebook by ISBN using EbookResourcesLocalDataSource
+
+
     @Override
-    public void delete(String isbn) {
-        ebookResourcesLocalDataSource.delete(isbn);
+    public void modify(Ebook digitalResource) {
+        ebookResourcesLocalDataSource.modify(digitalResource);
     }
 
-    // Modify an ebook using EbookResourcesLocalDataSource
     @Override
-    public void modify(Ebook ebook) {
-        ebookResourcesLocalDataSource.modify(ebook);
+    public void delete(String idDigitalResource) {
+        ebookResourcesLocalDataSource.findById(idDigitalResource);
     }
+
+    @Override
+    public void save(Ebook digitalResource) {
+        ebookResourcesLocalDataSource.save(digitalResource);
+    }
+
+
 }

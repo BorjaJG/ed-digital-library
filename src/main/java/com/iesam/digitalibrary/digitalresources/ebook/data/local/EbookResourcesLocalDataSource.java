@@ -13,7 +13,7 @@ public interface EbookResourcesLocalDataSource {
     Ebook findById(String idDigitalResource);
 
     // Delete an ebook from the repository by its ISBN
-    void delete(String isbn);
+    void delete(String idDigitalResource);
 
     // Modify an existing ebook in the repository
     void modify(Ebook ebook);

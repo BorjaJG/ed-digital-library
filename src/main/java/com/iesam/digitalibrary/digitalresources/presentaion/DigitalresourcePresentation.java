@@ -1,15 +1,27 @@
 package com.iesam.digitalibrary.digitalresources.presentaion;
 
 import com.iesam.Main;
-import com.iesam.digitalibrary.digitalresources.data.DigitalResourcesDataRepository;
-import com.iesam.digitalibrary.digitalresources.data.local.DigitalResourcesFileLocalDataSource;
-import com.iesam.digitalibrary.digitalresources.domain.DigitalResource;
+import com.iesam.digitalibrary.digitalresources.data.DigitalResourceDataRepository;
+import com.iesam.digitalibrary.digitalresources.data.local.DigitalResourceResourcesFileLocalDataSource;
+import com.iesam.digitalibrary.digitalresources.domain.*;
+import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
+import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
+import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
+import com.iesam.digitalibrary.digitalresources.ebook.domain.EbookFactory;
 import com.iesam.digitalibrary.digitalresources.ebook.presentation.EbookPresentation;
+import com.iesam.digitalibrary.digitalresources.movie.data.MovieDataRepository;
+import com.iesam.digitalibrary.digitalresources.movie.data.local.MovieResourcesFileLocalDataSource;
+import com.iesam.digitalibrary.digitalresources.movie.domain.Movie;
+import com.iesam.digitalibrary.digitalresources.movie.domain.MovieFactory;
+import com.iesam.digitalibrary.digitalresources.movie.presentation.MoviePresentation;
 
 
-import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+
+import static com.iesam.digitalibrary.digitalresources.domain.ModifyDigitalResourceUseCase.changeTypeOfId;
+import static com.iesam.digitalibrary.digitalresources.domain.ModifyDigitalResourceUseCase.getTypeFromId;
+import static com.iesam.digitalibrary.digitalresources.domain.NewDigitalResourceUseCase.generateUniqueIdDigitalResource;
 
 public class DigitalresourcePresentation {
 
@@ -24,7 +36,6 @@ public class DigitalresourcePresentation {
         scanner.close();
     }
 
-    // Method to display the main menu
     public static void showMenu() {
         // Infinite loop for displaying the menu repeatedly
         while (true) {
@@ -42,17 +53,34 @@ public class DigitalresourcePresentation {
                     EbookPresentation.showMenu();
                     break;
                 case 2:
-                    // List all digital resources
-                    listUser();
+                    // Call the method to present movies
+                    MoviePresentation.showMenu();
                     break;
                 case 3:
-                    // Search for a digital resource by ID
-                    searchDG();
+                    // Add a new digital resource
+                    addNewDigitalResource();
                     break;
                 case 4:
-                    Main.showMainMenu();
+                    // Modify an existing digital resource
+                    modifyDigitalResource();
                     break;
                 case 5:
+                    // Delete a digital resource
+                    deleteDigitalResource();
+                    break;
+                case 6:
+                    // List all digital resources
+                    listDigitalResources();
+                    break;
+                case 7:
+                    // Obtain a digital resource by its ID
+                    obtainDigitalResourceById();
+                    break;
+                case 8:
+                    // Return to the library menu
+                    Main.showMainMenu();
+                    break;
+                case 9:
                     // Exit the program
                     printColor("Exiting...", "red");
                     return;
@@ -63,74 +91,198 @@ public class DigitalresourcePresentation {
         }
     }
 
-    // Method to display the menu for digital resources
-    public static void menuConsoleBook() {
-        // Display the header and options for digital resources
-        printColor("Welcome to the Library System ", "cyan");
-        printColor("DIGITAL RESOURCE", "yellow");
-        printColor("-----------------------------------------------", "cyan");
-        printColor("|               Options:                      |", "cyan");
-        printColor("|  1. Presentation Ebook                      |", "blue");
-        printColor("|  2. List Recurse Digital                    |", "blue");
-        printColor("|  3. Search Recurse Digital                  |", "blue");
-        printColor("|  4. Return  Library                         |", "blue");
-        printColor("|  5. Exit                                    |", "blue");
-        printColor("-----------------------------------------------", "cyan");
-        System.out.print("Select an option: ");
-    }
 
-    // Method to list all digital resources
-    public static void listUser() {
-        System.out.println("List of Digital Resources:");
-        // Retrieve all digital resources from the data repository
-        DigitalResourcesDataRepository digitalResourcesRepository = new DigitalResourcesDataRepository(new DigitalResourcesFileLocalDataSource());
-        ArrayList<DigitalResource> digitalResources = digitalResourcesRepository.findAll();
-        // Display information about each digital resource
-        for (DigitalResource digitalResource : digitalResources) {
-            System.out.println(digitalResource.toString());
-        }
-    }
+    private static void addNewDigitalResource() {
+        System.out.println("Enter the type of digital resource (MOVIE or EBOOK):");
+        String type = scanner.nextLine();
 
-    // Method to search for a digital resource by ID
-    public static DigitalResource searchDG() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter Digital Resource ID to search: ");
-        // Lee el ID ingresado por el usuario
-        String id = scanner.nextLine();
-
-        // Busca el recurso digital en el repositorio de datos
-        DigitalResource digitalResource = getDGById(id);
-
-        // Verifica si el ID comienza con "m" o "e"
-        if (digitalResource != null) {
-            // Muestra la información si se encuentra
-            System.out.println("Digital Resource found:");
-            System.out.println(digitalResource.toString());
-
-            if (id.startsWith("m")) {
-                System.out.println("It's a movie."); // Es una película
-                //System.out.println(.toString());
-            } else if (id.startsWith("e")) {
-                System.out.println("It's an ebook.");// Es un ebook
-                //System.out.println(.toString());
-
-            } else {
-                System.out.println("ID doesn't start with 'm' or 'e'."); // El ID no empieza con 'm' ni 'e'
-            }
+        if (type.equals("MOVIE")) {
+            addMovie();
+        } else if (type.equals("EBOOK")) {
+            addEbook();
         } else {
-            // Informa al usuario si el recurso digital no se encuentra
-            System.out.println("Digital Resource not found with ID: " + id);
+            System.out.println("Invalid type specified.");
         }
-        return digitalResource;
+    }
+
+    private static void addMovie() {
+        System.out.println("Enter the following details of the movie:");
+
+        String idDigitalResource = generateUniqueIdDigitalResource(TypeDigitalResource.MOVIE, 8);
+        System.out.println("ID: " + idDigitalResource);
+        System.out.print("ISBN: ");
+        String isbn = scanner.nextLine();
+
+        System.out.print("Title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Director: ");
+        String director = scanner.nextLine();
+
+        System.out.print("Publication Date: ");
+        String publicationDate = scanner.nextLine();
+
+        MovieFactory movieFactory = new MovieFactory();
+        DigitalResourceRepository<Movie> movieDigitalResource = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        NewDigitalResourceUseCase newDigitalResourceUseCase = new NewDigitalResourceUseCase(movieDigitalResource);
+        Movie movie = movieFactory.build(idDigitalResource, isbn, title, director, publicationDate);
+        newDigitalResourceUseCase.execute(movie);
+
+        // Print the details of the saved movie
+        System.out.println("Details of the saved movie:");
+        System.out.println("ISBN: " + movie.getIsbn());
+        System.out.println("Title: " + movie.getTitle());
+        System.out.println("Director: " + movie.getDirector());
+        System.out.println("Publication Date: " + movie.getPublicationDate());
+
+    }
+
+    private static void addEbook() {
+        System.out.println("Enter the following details of the ebook:");
+
+        // Generate unique ID for the ebook
+        String idDigitalResource = generateUniqueIdDigitalResource(TypeDigitalResource.EBOOK, 8);
+
+        System.out.print("ISBN: ");
+        String isbn = scanner.nextLine();
+
+        System.out.print("Title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Author: ");
+        String author = scanner.nextLine();
+
+        System.out.print("Publication Date: ");
+        String publicationDate = scanner.nextLine();
+
+        EbookFactory ebookFactory = new EbookFactory();
+        DigitalResourceRepository<Ebook> ebookDigitalResource = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        NewDigitalResourceUseCase newDigitalResourceUseCase = new NewDigitalResourceUseCase(ebookDigitalResource);
+        Ebook ebook = ebookFactory.build(idDigitalResource, isbn, title, author, publicationDate);
+        newDigitalResourceUseCase.execute(ebook);
+
+        // Print the details of the saved ebook
+        System.out.println("Details of the saved ebook:");
+        System.out.println("ID: " + idDigitalResource);
+        System.out.println("ISBN: " + ebook.getIsbn());
+        System.out.println("Title: " + ebook.getTitle());
+        System.out.println("Author: " + ebook.getAuthor());
+        System.out.println("Publication Date: " + ebook.getPublicationDate());
     }
 
 
+    // Placeholder method to modify an existing digital resource
+    private static void modifyDigitalResource() {
+        System.out.print("Enter the ID of the digital resource to modify: ");
+        String idDigitalResource = scanner.nextLine();
 
-    // Method to retrieve a digital resource by ID from the data repository
-    public static DigitalResource getDGById(String id) {
-        DigitalResourcesDataRepository digitalResourcesRepository = new DigitalResourcesDataRepository(new DigitalResourcesFileLocalDataSource());
-        return digitalResourcesRepository.findById(id);
+        TypeDigitalResource resourceType = getTypeFromId(idDigitalResource);
+        if (resourceType == null) {
+            System.out.println("Invalid resource ID.");
+            return;
+        }
+
+        System.out.println("The current type of the resource is: " + resourceType);
+        System.out.print("Do you want to change the type of the resource? (yes/no): ");
+        String changeTypeResponse = scanner.nextLine().trim().toLowerCase();
+
+        if (changeTypeResponse.equals("yes")) {
+            System.out.print("Enter the new type (EBOOK/MOVIE): ");
+            String newTypeStr = scanner.nextLine().trim().toUpperCase();
+            TypeDigitalResource newType = null;
+
+            switch (newTypeStr) {
+                case "EBOOK":
+                    newType = TypeDigitalResource.EBOOK;
+                    modifyEbook(idDigitalResource);
+                    System.out.println(idDigitalResource);
+                    break;
+                case "MOVIE":
+                    newType = TypeDigitalResource.MOVIE;
+                    modifyMovie(idDigitalResource);
+                    System.out.println(idDigitalResource);
+                    break;
+                default:
+                    System.out.println("Invalid type entered.");
+                    break;
+            }
+
+        }
     }
+
+    private static void modifyMovie(String idDigitalResource) {
+        System.out.print("ISBN: ");
+        String isbn = scanner.nextLine();
+
+        System.out.print("Title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Author: ");
+        String director = scanner.nextLine();
+
+        System.out.print("Publication Date: ");
+        String publicationDate = scanner.nextLine();
+
+        MovieFactory movieFactory = new MovieFactory();
+        DigitalResourceRepository<Movie> movieDigitalResource = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        ModifyDigitalResourceUseCase modifyDigitalResourceUseCase = new ModifyDigitalResourceUseCase(movieDigitalResource);
+        Movie movie = movieFactory.build(idDigitalResource, isbn, title, director, publicationDate);
+        modifyDigitalResourceUseCase.execute(movie);
+    }
+
+    private static void modifyEbook(String idDigitalResource) {
+        System.out.print("ISBN: ");
+        String isbn = scanner.nextLine();
+
+        System.out.print("Title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Author: ");
+        String author = scanner.nextLine();
+
+        System.out.print("Publication Date: ");
+        String publicationDate = scanner.nextLine();
+
+        EbookFactory ebookFactory = new EbookFactory();
+        DigitalResourceRepository<Ebook> ebookDigitalResource = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+        ModifyDigitalResourceUseCase modifyDigitalResourceUseCase = new ModifyDigitalResourceUseCase(ebookDigitalResource);
+        Ebook ebook = ebookFactory.build(idDigitalResource, isbn, title, author, publicationDate);
+        modifyDigitalResourceUseCase.execute(ebook);
+
+    }
+
+    // Placeholder method to delete a digital resource
+    private static void deleteDigitalResource() {
+        System.out.print("Enter Digital Resource ID to delete: ");
+        String idDigitalResource = scanner.nextLine();
+        deleteDigitalResourcebyId(idDigitalResource);
+        System.out.println("Digital Resource deleted successfully.");
+    }
+
+    public static void deleteDigitalResourcebyId(String idDigitalResource) {
+        DeleteDigitalResourceUseCase deleteDigitalResourceUseCase = new DeleteDigitalResourceUseCase(new DigitalResourceDataRepository(new DigitalResourceResourcesFileLocalDataSource()));
+        deleteDigitalResourceUseCase.execute(idDigitalResource);
+    }
+
+    // Placeholder method to list all digital resources
+    private static void listDigitalResources() {
+        DigitalResourceDataRepository digitalResourceDataRepository = new DigitalResourceDataRepository(new DigitalResourceResourcesFileLocalDataSource());
+        ListDigitalResourceUseCase listDigitalResourceUseCase = new ListDigitalResourceUseCase(digitalResourceDataRepository);
+        List<DigitalResource> digitalResources = listDigitalResourceUseCase.execute();
+        System.out.println(digitalResources);
+    }
+
+    // Placeholder method to obtain a digital resource by its ID
+    private static void obtainDigitalResourceById() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Digital Resource ID to delete: ");
+        String iddigitalResource = sc.nextLine();
+        DigitalResourceDataRepository digitalResourceDataRepository = new DigitalResourceDataRepository(new DigitalResourceResourcesFileLocalDataSource());
+        GetDigitalResourceUseCase getDigitalResourceUseCase = new GetDigitalResourceUseCase(digitalResourceDataRepository);
+        DigitalResource digitalResource = getDigitalResourceUseCase.execute(iddigitalResource);
+        System.out.println(digitalResource);
+    }
+
 
     // Method to print colored text
     public static void printColor(String text, String color) {
@@ -176,5 +328,25 @@ public class DigitalresourcePresentation {
 
         // Print the text in the chosen color
         System.out.println(chosenColor + text + ANSI_RESET);
+    }
+
+    // Method to display the menu for digital resources
+    public static void menuConsoleBook() {
+        // Display the header and options for digital resources
+        printColor("Welcome to the Library System ", "cyan");
+        printColor("DIGITAL RESOURCE", "yellow");
+        printColor("-----------------------------------------------", "cyan");
+        printColor("|               Options:                      |", "cyan");
+        printColor("|  1. Presentation Ebook                      |", "blue");
+        printColor("|  2. Presentation Movie                      |", "blue");
+        printColor("|  3. New Digital Resource                    |", "blue");
+        printColor("|  4. Modify Digital Resource                 |", "blue");
+        printColor("|  5. Delete Digital Resource                 |", "blue");
+        printColor("|  6. List Digital Resource                   |", "blue");
+        printColor("|  7. Obtain Digital Resource                 |", "blue");
+        printColor("|  8. Return  Library                         |", "blue");
+        printColor("|  9. Exit                                    |", "blue");
+        printColor("-----------------------------------------------", "cyan");
+        System.out.print("Select an option: ");
     }
 }
