@@ -2,12 +2,13 @@ package com.iesam.digitalibrary.loan.data;
 
 import com.iesam.digitalibrary.loan.data.local.LoanLocalDataSource;
 import com.iesam.digitalibrary.loan.domain.Loan;
+import com.iesam.digitalibrary.loan.domain.LoanRepository;
 
 
 import java.util.ArrayList;
 
 
-public class LoanDataRepository implements LoanLocalDataSource {
+public class LoanDataRepository implements LoanRepository {
     // Dependency on LoanLocalDataSource
     private LoanLocalDataSource loanLocalDataSource;
 
@@ -22,21 +23,18 @@ public class LoanDataRepository implements LoanLocalDataSource {
         loanLocalDataSource.save(loan);
     }
 
-    // Find all loans using LoanLocalDataSource
     @Override
-    public ArrayList<Loan> findAll() {
+    public void deleteLoan(String idLoan) {
+       loanLocalDataSource.delete(idLoan);
+    }
+
+    @Override
+    public ArrayList<Loan> list() {
         return loanLocalDataSource.findAll();
     }
 
-    // Delete a loan by ID using LoanLocalDataSource
     @Override
-    public void delete(String idLoan) {
-        loanLocalDataSource.delete(idLoan);
-    }
-
-    // Find a loan by ID using LoanLocalDataSource
-    @Override
-    public Loan findById(String idLoan) {
+    public Loan obtain(String idLoan) {
         return loanLocalDataSource.findById(idLoan);
     }
 

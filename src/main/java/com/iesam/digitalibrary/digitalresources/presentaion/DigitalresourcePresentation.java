@@ -183,7 +183,7 @@ public class DigitalresourcePresentation {
         }
 
         System.out.println("The current type of the resource is: " + resourceType);
-        System.out.print("Do you want to change the type of the resource? (yes/no): ");
+        System.out.print(" Do you want to change the type of the resource? (yes/no): ");
         String changeTypeResponse = scanner.nextLine().trim().toLowerCase();
 
         if (changeTypeResponse.equals("yes")) {
@@ -194,11 +194,13 @@ public class DigitalresourcePresentation {
             switch (newTypeStr) {
                 case "EBOOK":
                     newType = TypeDigitalResource.EBOOK;
+                    idDigitalResource = changeTypeOfId(idDigitalResource, newType);
                     modifyEbook(idDigitalResource);
                     System.out.println(idDigitalResource);
                     break;
                 case "MOVIE":
                     newType = TypeDigitalResource.MOVIE;
+                    idDigitalResource = changeTypeOfId(idDigitalResource, newType);
                     modifyMovie(idDigitalResource);
                     System.out.println(idDigitalResource);
                     break;
@@ -211,6 +213,9 @@ public class DigitalresourcePresentation {
     }
 
     private static void modifyMovie(String idDigitalResource) {
+
+        System.out.print("idDigitalResource: " +idDigitalResource);
+
         System.out.print("ISBN: ");
         String isbn = scanner.nextLine();
 
@@ -231,6 +236,9 @@ public class DigitalresourcePresentation {
     }
 
     private static void modifyEbook(String idDigitalResource) {
+
+        System.out.println("idDigitalResource: " +idDigitalResource);
+
         System.out.print("ISBN: ");
         String isbn = scanner.nextLine();
 
@@ -280,7 +288,7 @@ public class DigitalresourcePresentation {
         DigitalResourceDataRepository digitalResourceDataRepository = new DigitalResourceDataRepository(new DigitalResourceResourcesFileLocalDataSource());
         GetDigitalResourceUseCase getDigitalResourceUseCase = new GetDigitalResourceUseCase(digitalResourceDataRepository);
         DigitalResource digitalResource = getDigitalResourceUseCase.execute(iddigitalResource);
-        System.out.println(digitalResource.toString());
+        System.out.println(digitalResource);
     }
 
 

@@ -12,7 +12,7 @@ public class ListLoanUseCase {
     }
 
     // Method to execute listing all loans
-    private ArrayList<Loan> executeList() {
+    public ArrayList<Loan> execute() {
         return loanRepository.list(); // Call list method of LoanRepository to get all loans
     }
 }

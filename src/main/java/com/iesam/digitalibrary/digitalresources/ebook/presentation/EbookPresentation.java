@@ -9,6 +9,8 @@ import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePrese
 import java.util.List;
 import java.util.Scanner;
 
+import static com.iesam.digitalibrary.digitalresources.domain.ListDigitalResourceUseCase.getTypeFromId;
+
 
 public class EbookPresentation {
 
@@ -61,12 +63,25 @@ public class EbookPresentation {
         System.out.println(ebook);
     }
 
-    private static void listEbooks() {
-        DigitalResourceRepository digitalResourceRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
-        ListDigitalResourceUseCase listDigitalResourceUseCase = new ListDigitalResourceUseCase(digitalResourceRepository);
-        List<Ebook> ebooks =  (List<Ebook>) (List<?>) listDigitalResourceUseCase.execute();
-        System.out.println(ebooks);
 
+
+    private static void listEbooks() {
+        // Inicializa el repositorio de recursos digitales para libros electrónicos
+        DigitalResourceRepository digitalResourceRepository = new EbookDataRepository(new EbookResourcesFileLocalDataSource());
+
+        // Inicializa el caso de uso para listar recursos digitales
+        ListDigitalResourceUseCase listDigitalResourceUseCase = new ListDigitalResourceUseCase(digitalResourceRepository);
+
+        // Obtiene la lista de recursos digitales
+        List<DigitalResource> digitalResources = listDigitalResourceUseCase.execute();
+
+        // Itera sobre los recursos digitales y solo imprime los libros electrónicos
+        for (DigitalResource resource : digitalResources) {
+            TypeDigitalResource type = getTypeFromId(resource.idDigitalResource);
+            if (type == TypeDigitalResource.EBOOK) {
+                System.out.println(resource);
+            }
+        }
     }
 
 

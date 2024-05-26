@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class LoanFileLocalDataSource implements LoanLocalDataSource {
     // File name for storing loan data
-    private final String folderName = "dataStore";
+    private final String folderName = "filestore";
     private final String fileName = "Loan.txt";
     private final String filePath = folderName + File.separator + fileName;
 

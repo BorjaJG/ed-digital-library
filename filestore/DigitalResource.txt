@@ -1,1 +1,1 @@
-[{"title":"1","director":"1","publicationDate":"1","isbn":"1","idDigitalResource":"MXDHU93L"}]
+[{"title":"1","publicationDate":"1","isbn":"1","idDigitalResource":"M9UIY9YW"},{"title":"1","author":"1","publicationDate":"1","isbn":"1","idDigitalResource":"EQDFLB7X"}]

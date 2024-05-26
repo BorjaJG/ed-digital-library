@@ -2,9 +2,7 @@ package com.iesam.digitalibrary.digitalresources.movie.presentation;
 
 
 import com.iesam.Main;
-import com.iesam.digitalibrary.digitalresources.domain.DigitalResourceRepository;
-import com.iesam.digitalibrary.digitalresources.domain.GetDigitalResourceUseCase;
-import com.iesam.digitalibrary.digitalresources.domain.ListDigitalResourceUseCase;
+import com.iesam.digitalibrary.digitalresources.domain.*;
 import com.iesam.digitalibrary.digitalresources.ebook.data.EbookDataRepository;
 import com.iesam.digitalibrary.digitalresources.ebook.data.local.EbookResourcesFileLocalDataSource;
 import com.iesam.digitalibrary.digitalresources.ebook.domain.Ebook;
@@ -16,6 +14,7 @@ import com.iesam.digitalibrary.digitalresources.presentaion.DigitalresourcePrese
 import java.util.List;
 import java.util.Scanner;
 
+import static com.iesam.digitalibrary.digitalresources.domain.ListDigitalResourceUseCase.getTypeFromId;
 
 
 public class MoviePresentation {
@@ -69,11 +68,24 @@ public class MoviePresentation {
     }
 
     private static void listMovies() {
-        DigitalResourceRepository digitalResourceRepository =new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+        // Inicializa el repositorio de recursos digitales para películas
+        DigitalResourceRepository digitalResourceRepository = new MovieDataRepository(new MovieResourcesFileLocalDataSource());
+
+        // Inicializa el caso de uso para listar recursos digitales
         ListDigitalResourceUseCase listDigitalResourceUseCase = new ListDigitalResourceUseCase(digitalResourceRepository);
-        List<Movie> movies =  (List<Movie>) (List<?>) listDigitalResourceUseCase.execute();
-        System.out.println(movies);
+
+        // Obtiene la lista de recursos digitales
+        List<DigitalResource> digitalResources = listDigitalResourceUseCase.execute();
+
+        // Itera sobre los recursos digitales y verifica si son películas
+        for (DigitalResource resource : digitalResources) {
+            TypeDigitalResource type = getTypeFromId(resource.idDigitalResource);
+            if (type == TypeDigitalResource.MOVIE) {
+                System.out.println(resource);
+            }
+        }
     }
+
 
     // Method to printColor
     public static void printColor(String text, String color) {

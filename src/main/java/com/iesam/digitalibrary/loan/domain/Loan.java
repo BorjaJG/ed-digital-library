@@ -17,6 +17,17 @@ public class Loan {
     public final Date fechaE; // Expected return date
 
     // Constructor
+    public Loan(String idLoan, DigitalResource digitalResource, User user, Date fechaI, Date fechaF) {
+        this.idLoan = idLoan;
+        this.digitalResource = digitalResource;
+        this.user = user;
+        this.fechaI = fechaI;
+        this.fechaF = fechaF;
+        this.fechaE=null;
+
+
+    }
+
     public Loan(String idLoan, DigitalResource digitalResource, User user, Date fechaI, Date fechaF, Date fechaE) {
         this.idLoan = idLoan;
         this.digitalResource = digitalResource;
