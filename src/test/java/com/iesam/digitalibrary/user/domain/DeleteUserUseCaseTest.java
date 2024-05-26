@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteUserUseCaseTest {
@@ -18,30 +20,23 @@ class DeleteUserUseCaseTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
         deleteUserUseCase = new DeleteUserUseCase(userRepository);
     }
 
     @AfterEach
-    public void tearDown() {
+    public void clear() {
         deleteUserUseCase = null;
     }
 
     @Test
-    public void testDeleteUser() {
+    public void execute_ShouldDeleteUserById() {
         // Given
-        String userId = "1";
+        String userId = "123";
 
         // When
         deleteUserUseCase.execute(userId);
 
         // Then
-        Mockito.verify(userRepository, Mockito.times(1)).delete(userId);
+        Mockito.verify(userRepository, times(1)).delete(userId);
     }
-
-
-
-
-
-
 }

@@ -9,12 +9,13 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class NewUserUseCaseTest {
-
     @Mock
     UserRepository userRepository;
+
     NewUserUseCase newUserUseCase;
 
     @BeforeEach
@@ -28,15 +29,41 @@ class NewUserUseCaseTest {
     }
 
     @Test
-    public void GetUserAndSaveUser() {
-        //Given
-        User user = new User("1", "2", "juan", "amigo@amigo", "617929803", "1", "1",
-                "1", "1", "1", "1", "1", "1", "1");
-        //When
-        newUserUseCase.execute(user);
-        //Then
-        Mockito.verify(userRepository, Mockito.times(1)).save(user);
+    public void execute_ShouldSaveNewUser() {
+        // Given
+        String userId = NewUserUseCase.generateUniqueIdUser(8); // Generate unique user ID
+        String email = NewUserUseCase.generarCorreoElectronicoUser("John", userId); // Generate email
+        User user = new User(userId, "John", email, "123456789", "123 Main St", null, null, null, null, null, null, null, null, null);
 
+        // When
+        newUserUseCase.execute(user);
+
+        // Then
+        Mockito.verify(userRepository, times(1)).save(user);
     }
 
+    @Test
+    public void generateUniqueIdUser_ShouldReturnUniqueIdWithSpecifiedLength() {
+        // Given
+        int length = 10;
+
+        // When
+        String uniqueId = NewUserUseCase.generateUniqueIdUser(length);
+
+        // Then
+        assertEquals(length, uniqueId.length());
+    }
+
+    @Test
+    public void generarCorreoElectronicoUser_ShouldGenerateCorrectEmailAddress() {
+        // Given
+        String nombre = "John";
+        String userId = "ABCDEFGHIJ";
+
+        // When
+        String correo = NewUserUseCase.generarCorreoElectronicoUser(nombre, userId);
+
+        // Then
+        assertEquals("JohnABCDEFGHIJ@biblio.com", correo);
+    }
 }
