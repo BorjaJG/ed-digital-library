@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -49,13 +49,15 @@ class ModifyUserUseCaseTest {
         String roleId = null;
         String additionalData = null;
 
-        User user = new User(userId, name, email, phoneNumber, address, registrationDate, userType, status, history, fines, transactions, notificationPreference, roleId, additionalData);
+        // Mocking user factory to return a User object with specific data
+        User mockedUser = new User(userId, name, email, phoneNumber, address, registrationDate, userType, status, history, fines, transactions, notificationPreference, roleId, additionalData);
+        when(userFactory.build(userId, name, email, phoneNumber, address, registrationDate, userType, status, history, fines, transactions, notificationPreference, roleId, additionalData)).thenReturn(mockedUser);
 
         // When
         modifyUserUseCase.execute(userId, name, email, phoneNumber, address, registrationDate, userType, status, history, fines, transactions, notificationPreference, roleId, additionalData);
 
         // Then
-        Mockito.verify(userRepository, times(1)).modify(user);
+        verify(userRepository, times(1)).modify(mockedUser);
     }
 
     @Test
