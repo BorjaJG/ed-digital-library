@@ -18,4 +18,20 @@ public class ListDigitalResourceUseCase {
         // Retrieve the list of digital resources from the repository
         return digitalResourceRepository.list();
     }
+    public static TypeDigitalResource getTypeFromId(String id) {
+
+
+        char prefix = id.charAt(0);
+
+        switch (prefix) {
+            case 'E':
+                return TypeDigitalResource.EBOOK;
+            case 'M':
+                return TypeDigitalResource.MOVIE;
+            default:
+                return null;// Devolver tipo desconocido si el prefijo es inválido
+        }
+    }
+
+
 }

@@ -11,7 +11,7 @@ public class DeleteLoanUseCase {
     }
 
     // Method to execute deleting a loan by ID
-    void execute(String idLoan){
+    public void execute(String idLoan){
         this.loanRepository.deleteLoan(idLoan); // Call deleteLoan method of LoanRepository
     }
 

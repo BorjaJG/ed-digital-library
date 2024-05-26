@@ -13,7 +13,7 @@ public class GetLoanUseCase {
     }
 
     // Method to execute obtaining a loan by ID
-    Loan execute(String idLoan) {
+    public Loan execute(String idLoan) {
         return this.loanRepository.obtain(idLoan); // Call obtain method of LoanRepository
     }
 
