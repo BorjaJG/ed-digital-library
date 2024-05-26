@@ -8,5 +8,5 @@ public enum TypeDigitalResource {
     ARTICLE,
     COURSE,
     PODCAST,
-    WEBINAR
+    AUDIO, WEBINAR
 }
