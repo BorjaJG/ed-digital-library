@@ -1,18 +1,19 @@
 package com.iesam.digitalibrary.user.domain;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class GetUserUseCaseTest {
-
     @Mock
     UserRepository userRepository;
 
@@ -20,25 +21,28 @@ class GetUserUseCaseTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
         getUserUseCase = new GetUserUseCase(userRepository);
     }
 
     @AfterEach
-    public void tearDown() {
+    public void clear() {
         getUserUseCase = null;
     }
 
     @Test
-    public void testGetUser() {
+    public void execute_ShouldReturnUserById() {
         // Given
-        String userId = "1";
+        String userId = "123";
+        User expectedUser = new User(userId, "John", "john@biblio.com", "123456789", "123 Elm St", null, null, null, null, null, null, null, null, null);
+
+        // Stub the behavior of userRepository.obtain() to return the expected user
+        when(userRepository.obtain(userId)).thenReturn(expectedUser);
 
         // When
-        getUserUseCase.execute(userId);
+        User actualUser = getUserUseCase.execute(userId);
 
         // Then
-        Mockito.verify(userRepository, Mockito.times(1)).obtain(userId);
+        assertEquals(expectedUser, actualUser);
+        Mockito.verify(userRepository, times(1)).obtain(userId);
     }
-
 }
